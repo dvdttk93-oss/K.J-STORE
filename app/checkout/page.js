@@ -19,8 +19,11 @@ export default function CheckoutPage() {
   const [orderCreated, setOrderCreated] = useState(false);
   const [orderId, setOrderId] = useState(null);
   const [pixKeyCopied, setPixKeyCopied] = useState(false);
+  const [pixCodeCopied, setPixCodeCopied] = useState(false);
   const [qrCodeUrl, setQrCodeUrl] = useState('');
+  const [pixCode, setPixCode] = useState('');
   const canvasRef = useRef(null);
+  const WHATSAPP_NUMBER = '77998309542';
 
   const PIX_KEY = '07995461518';
 
