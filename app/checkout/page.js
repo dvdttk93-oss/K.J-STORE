@@ -40,6 +40,29 @@ export default function CheckoutPage() {
     loadCart();
   }, []);
 
+  useEffect(() => {
+    if (step === 2) {
+      generateQRCode();
+    }
+  }, [step]);
+
+  const generateQRCode = async () => {
+    try {
+      // Gerar QR Code com a chave PIX
+      const url = await QRCode.toDataURL(PIX_KEY, {
+        width: 300,
+        margin: 2,
+        color: {
+          dark: '#000000',
+          light: '#FFFFFF'
+        }
+      });
+      setQrCodeUrl(url);
+    } catch (error) {
+      console.error('Erro ao gerar QR Code:', error);
+    }
+  };
+
   const checkAuth = async () => {
     const token = localStorage.getItem('token');
     if (!token) {
