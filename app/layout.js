@@ -4,8 +4,8 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
-  title: 'Sport Store - E-commerce Esportivo',
-  description: 'Sua loja de produtos esportivos de alta qualidade',
+  title: 'K.J STORE - E-commerce Esportivo',
+  description: 'Sua loja de produtos esportivos de alta qualidade - K.J STORE',
 };
 
 export default function RootLayout({ children }) {
