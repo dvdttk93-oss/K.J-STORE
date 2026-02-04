@@ -478,51 +478,74 @@ export default function Home() {
 
       {/* Featured Products */}
       {!selectedCategory && !searchTerm && featuredProducts.length > 0 && (
-        <section className="py-16 bg-gray-50">
+        <section className="py-16 bg-black" id="produtos">
           <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold mb-8">Produtos em Destaque</h2>
+            <div className="mb-12 text-center">
+              <Badge className="bg-gradient-to-r from-green-400 to-cyan-400 text-black font-bold text-xs px-4 py-1 mb-4">
+                TENDÊNCIAS GLOBAIS
+              </Badge>
+              <h2 className="text-4xl md:text-5xl font-black text-white mb-4">DROPS EXCLUSIVOS</h2>
+              <p className="text-gray-400 text-lg">Direto da China para o seu estilo urbano</p>
+            </div>
+            
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {featuredProducts.map(product => (
-                <Card key={product._id} className="group cursor-pointer hover:shadow-lg transition-shadow">
+                <Card key={product._id} className="group cursor-pointer bg-zinc-900 border-zinc-800 hover:border-green-400 transition-all duration-300 card-hover overflow-hidden">
                   <CardContent className="p-0">
-                    <div className="relative overflow-hidden aspect-square">
+                    <div className="relative overflow-hidden aspect-square bg-black">
                       <img
                         src={product.images[0]}
                         alt={product.name}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                       />
                       {product.originalPrice > product.price && (
-                        <Badge className="absolute top-4 right-4 bg-red-500">
+                        <Badge className="absolute top-4 right-4 bg-gradient-to-r from-green-400 to-cyan-400 text-black font-bold">
                           -{Math.round((1 - product.price / product.originalPrice) * 100)}%
                         </Badge>
                       )}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60"></div>
+                      
                       <button
                         onClick={() => addToWishlist(product._id)}
-                        className="absolute top-4 left-4 p-2 bg-white rounded-full hover:bg-gray-100 opacity-0 group-hover:opacity-100 transition-opacity"
+                        className="absolute top-4 left-4 p-3 bg-black/80 backdrop-blur-sm rounded-full hover:bg-green-400 hover:text-black transition-all opacity-0 group-hover:opacity-100"
                       >
                         <Heart className="w-4 h-4" />
                       </button>
                     </div>
-                    <div className="p-4">
-                      <h3 className="font-semibold mb-1">{product.name}</h3>
-                      <p className="text-sm text-gray-600 mb-2 line-clamp-2">{product.description}</p>
-                      <div className="flex items-center mb-2">
-                        <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                        <span className="text-sm ml-1">{product.rating}</span>
-                        <span className="text-sm text-gray-500 ml-1">({product.reviews})</span>
+                    
+                    <div className="p-4 bg-zinc-900">
+                      <Badge variant="outline" className="mb-2 text-xs border-green-400 text-green-400">
+                        STREETWEAR
+                      </Badge>
+                      <h3 className="font-bold text-white mb-1 uppercase tracking-wide">{product.name}</h3>
+                      <p className="text-sm text-gray-400 mb-3 line-clamp-2">{product.description}</p>
+                      
+                      <div className="flex items-center mb-3">
+                        <div className="flex">
+                          {[...Array(5)].map((_, i) => (
+                            <Star key={i} className={`w-3 h-3 ${i < Math.floor(product.rating) ? 'fill-green-400 text-green-400' : 'text-gray-600'}`} />
+                          ))}
+                        </div>
+                        <span className="text-xs text-gray-500 ml-2">({product.reviews})</span>
                       </div>
+                      
                       <div className="flex items-center justify-between">
                         <div>
-                          <div className="text-lg font-bold">R$ {product.price.toFixed(2)}</div>
+                          <div className="text-xl font-black text-white">
+                            R$ {product.price.toFixed(2)}
+                          </div>
                           {product.originalPrice > product.price && (
-                            <div className="text-sm text-gray-500 line-through">R$ {product.originalPrice.toFixed(2)}</div>
+                            <div className="text-xs text-gray-500 line-through">
+                              R$ {product.originalPrice.toFixed(2)}
+                            </div>
                           )}
                         </div>
                         <Button
                           size="sm"
                           onClick={() => setSelectedProduct(product)}
+                          className="bg-gradient-to-r from-green-400 to-cyan-400 text-black font-bold hover:shadow-lg hover:shadow-green-400/50"
                         >
-                          Comprar
+                          COMPRAR
                         </Button>
                       </div>
                     </div>
