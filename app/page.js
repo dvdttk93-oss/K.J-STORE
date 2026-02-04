@@ -427,61 +427,64 @@ export default function Home() {
 
       {/* Hero Section */}
       {!selectedCategory && !searchTerm && (
-        <section className="relative urban-gradient text-white py-32 overflow-hidden">
-          {/* Background Pattern */}
-          <div className="absolute inset-0 opacity-10">
-            <div className="absolute inset-0" style={{
-              backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,.03) 35px, rgba(255,255,255,.03) 70px)',
-            }}></div>
+        <section className="relative text-white overflow-hidden">
+          {/* Banner Image */}
+          <div className="relative h-[600px] md:h-[700px]">
+            <img 
+              src="/banner.jpeg" 
+              alt="K.J STORE Banner" 
+              className="w-full h-full object-cover"
+            />
+            {/* Dark Overlay for better text readability */}
+            <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-transparent"></div>
           </div>
           
-          <div className="container mx-auto px-4 relative z-10">
-            <div className="max-w-4xl animate-slide-up">
-              <div className="mb-6">
-                <Badge className="bg-gradient-to-r from-green-400 to-cyan-400 text-black font-bold text-sm px-6 py-2 animate-pulse-glow">
-                  IMPORTAÇÃO DIRETA DA CHINA
-                </Badge>
-              </div>
-              
-              <h2 className="text-6xl md:text-7xl font-black mb-6 leading-tight">
-                STREETWEAR<br/>
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-cyan-400">
-                  ENCONTRA ESPORTE
-                </span>
-              </h2>
-              
-              <p className="text-2xl mb-4 text-gray-300 font-light max-w-2xl leading-relaxed">
-                Conectamos o streetwear e o esporte em um só estilo.
-              </p>
-              
-              <p className="text-lg mb-8 text-gray-400 max-w-2xl leading-relaxed">
-                Atuamos como <span className="text-green-400 font-semibold">importadora</span>, trazendo da China para o Brasil peças que refletem a <span className="text-cyan-400 font-semibold">cultura urbana</span>, o lifestyle esportivo e as tendências que movimentam o cenário global da moda.
-              </p>
-              
-              <div className="flex flex-wrap gap-4">
-                <Button 
-                  size="lg" 
-                  className="bg-gradient-to-r from-green-400 to-cyan-400 text-black font-bold hover:shadow-2xl hover:scale-105 transition-all px-8 py-6 text-lg"
-                  onClick={() => document.getElementById('produtos')?.scrollIntoView({ behavior: 'smooth' })}
-                >
-                  EXPLORAR COLEÇÃO
-                  <ChevronRight className="ml-2 w-6 h-6" />
-                </Button>
+          {/* Content Overlay */}
+          <div className="absolute inset-0 flex items-center">
+            <div className="container mx-auto px-4 relative z-10">
+              <div className="max-w-4xl animate-slide-up">
+                <div className="mb-6">
+                  <Badge className="bg-gradient-to-r from-green-400 to-cyan-400 text-black font-bold text-sm px-6 py-2 animate-pulse-glow">
+                    IMPORTAÇÃO DIRETA DA CHINA
+                  </Badge>
+                </div>
                 
-                <Button 
-                  size="lg" 
-                  variant="outline" 
-                  className="border-2 border-white text-white hover:bg-white hover:text-black font-bold px-8 py-6 text-lg transition-all"
-                >
-                  SOBRE NÓS
-                </Button>
+                <h2 className="text-6xl md:text-7xl font-black mb-6 leading-tight drop-shadow-2xl">
+                  STREETWEAR<br/>
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-cyan-400">
+                    ENCONTRA ESPORTE
+                  </span>
+                </h2>
+                
+                <p className="text-2xl mb-4 text-gray-200 font-light max-w-2xl leading-relaxed drop-shadow-lg">
+                  Conectamos o streetwear e o esporte em um só estilo.
+                </p>
+                
+                <p className="text-lg mb-8 text-gray-300 max-w-2xl leading-relaxed drop-shadow-lg">
+                  Atuamos como <span className="text-green-400 font-semibold">importadora</span>, trazendo da China para o Brasil peças que refletem a <span className="text-cyan-400 font-semibold">cultura urbana</span>, o lifestyle esportivo e as tendências que movimentam o cenário global da moda.
+                </p>
+                
+                <div className="flex flex-wrap gap-4">
+                  <Button 
+                    size="lg" 
+                    className="bg-gradient-to-r from-green-400 to-cyan-400 text-black font-bold hover:shadow-2xl hover:scale-105 transition-all px-8 py-6 text-lg"
+                    onClick={() => document.getElementById('produtos')?.scrollIntoView({ behavior: 'smooth' })}
+                  >
+                    EXPLORAR COLEÇÃO
+                    <ChevronRight className="ml-2 w-6 h-6" />
+                  </Button>
+                  
+                  <Button 
+                    size="lg" 
+                    variant="outline" 
+                    className="border-2 border-white text-white hover:bg-white hover:text-black font-bold px-8 py-6 text-lg transition-all backdrop-blur-sm"
+                  >
+                    SOBRE NÓS
+                  </Button>
+                </div>
               </div>
             </div>
           </div>
-          
-          {/* Decorative Elements */}
-          <div className="absolute bottom-0 right-0 w-96 h-96 bg-gradient-to-tl from-green-400/20 to-transparent rounded-full blur-3xl"></div>
-          <div className="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-cyan-400/20 to-transparent rounded-full blur-3xl"></div>
         </section>
       )}
 
