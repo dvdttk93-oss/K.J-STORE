@@ -23,7 +23,9 @@ export default function CheckoutPage() {
   const [qrCodeUrl, setQrCodeUrl] = useState('');
   const [pixCode, setPixCode] = useState('');
   const canvasRef = useRef(null);
+  const [searchingCEP, setSearchingCEP] = useState(false);
   const WHATSAPP_NUMBER = '77998309542';
+  const ADMIN_WHATSAPP = '77998309542'; // WhatsApp para receber notificações
 
   const PIX_KEY = '07995461518';
 
