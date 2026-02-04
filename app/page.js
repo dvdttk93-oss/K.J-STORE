@@ -320,7 +320,16 @@ export default function Home() {
                 <div className="flex items-center space-x-2">
                   <span className="text-sm hidden md:inline text-white font-semibold">{user.name}</span>
                   {user.role === 'admin' && (
-                    <Badge className="bg-gradient-to-r from-green-400 to-cyan-400 text-black">Admin</Badge>
+                    <>
+                      <Badge className="bg-gradient-to-r from-green-400 to-cyan-400 text-black">Admin</Badge>
+                      <Button 
+                        onClick={() => router.push('/admin')} 
+                        size="sm" 
+                        className="bg-purple-600 hover:bg-purple-700 text-white font-bold"
+                      >
+                        Painel Admin
+                      </Button>
+                    </>
                   )}
                   <Button variant="ghost" size="sm" onClick={handleLogout} className="text-gray-400 hover:text-white hover:bg-zinc-900">
                     Sair
