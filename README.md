@@ -206,21 +206,39 @@ O design foi inspirado no estilo Nike:
 - `GET /api/admin/users` - Lista todos os usuários
 - `POST /api/admin/categories` - Cria categoria
 
-## 💳 Integração de Pagamento
+## 💳 Integração de Pagamento PIX
 
-⚠️ **IMPORTANTE**: O sistema está preparado para integração com gateway de pagamento.
+✅ **INTEGRADO E FUNCIONANDO!**
 
-### Gateways Suportados (fácil integração):
-- Stripe
-- Mercado Pago
-- PagSeguro
-- PayPal
+O sistema está totalmente configurado com pagamento via PIX!
 
-Para integrar, você precisará:
-1. Criar conta no gateway escolhido
-2. Obter as chaves de API (teste e produção)
-3. Adicionar as chaves no arquivo `.env`
-4. Implementar o SDK do gateway no checkout
+### Chave PIX Configurada:
+- **Tipo**: Telefone
+- **Chave**: 07995461518
+
+### Funcionalidades PIX:
+- ✅ QR Code gerado automaticamente
+- ✅ Copiar chave PIX com um clique
+- ✅ Instruções passo a passo
+- ✅ Valor exibido claramente
+- ✅ Fluxo completo de pagamento
+
+### Como Funciona:
+1. Cliente adiciona produtos ao carrinho
+2. Vai para o checkout
+3. Preenche endereço de entrega
+4. Na tela de pagamento:
+   - **Opção 1**: Escaneia o QR Code PIX
+   - **Opção 2**: Copia a chave PIX manualmente
+5. Faz o pagamento no app do banco
+6. Confirma o pedido
+7. Admin vê o pedido no painel e atualiza o status
+
+### Para Trocar a Chave PIX:
+Edite o arquivo `/app/app/checkout/page.js` na linha:
+```javascript
+const PIX_KEY = '07995461518'; // Sua chave PIX aqui
+```
 
 ## 🚢 Deploy
 
