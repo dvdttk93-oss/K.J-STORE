@@ -246,6 +246,14 @@ export default function CheckoutPage() {
         setOrderId(data.orderId);
         setOrderCreated(true);
         setStep(3);
+        
+        // Notificar admin sobre novo pedido
+        setTimeout(() => {
+          notifyAdminNewOrder({
+            orderId: data.orderId,
+            total: calculateTotal()
+          });
+        }, 1000);
       } else {
         alert('Erro ao criar pedido. Tente novamente.');
       }
