@@ -295,61 +295,61 @@ export default function AdminPage() {
         <nav className="mt-6">
           <button
             onClick={() => setActiveTab('dashboard')}
-            className={`w-full flex items-center px-6 py-3 hover:bg-gray-800 ${
-              activeTab === 'dashboard' ? 'bg-gray-800 border-l-4 border-blue-500' : ''
+            className={`w-full flex items-center px-6 py-3 hover:bg-zinc-800 transition-colors ${
+              activeTab === 'dashboard' ? 'bg-zinc-800 border-l-4 border-green-400' : ''
             }`}
           >
             <Home className="w-5 h-5 mr-3" />
-            Dashboard
+            <span className="font-bold uppercase text-sm tracking-wide">Dashboard</span>
           </button>
 
           <button
             onClick={() => setActiveTab('products')}
-            className={`w-full flex items-center px-6 py-3 hover:bg-gray-800 ${
-              activeTab === 'products' ? 'bg-gray-800 border-l-4 border-blue-500' : ''
+            className={`w-full flex items-center px-6 py-3 hover:bg-zinc-800 transition-colors ${
+              activeTab === 'products' ? 'bg-zinc-800 border-l-4 border-green-400' : ''
             }`}
           >
             <Package className="w-5 h-5 mr-3" />
-            Produtos
+            <span className="font-bold uppercase text-sm tracking-wide">Produtos</span>
           </button>
 
           <button
             onClick={() => setActiveTab('categories')}
-            className={`w-full flex items-center px-6 py-3 hover:bg-gray-800 ${
-              activeTab === 'categories' ? 'bg-gray-800 border-l-4 border-blue-500' : ''
+            className={`w-full flex items-center px-6 py-3 hover:bg-zinc-800 transition-colors ${
+              activeTab === 'categories' ? 'bg-zinc-800 border-l-4 border-green-400' : ''
             }`}
           >
             <Filter className="w-5 h-5 mr-3" />
-            Categorias
+            <span className="font-bold uppercase text-sm tracking-wide">Categorias</span>
           </button>
 
           <button
             onClick={() => setActiveTab('orders')}
-            className={`w-full flex items-center px-6 py-3 hover:bg-gray-800 ${
-              activeTab === 'orders' ? 'bg-gray-800 border-l-4 border-blue-500' : ''
+            className={`w-full flex items-center px-6 py-3 hover:bg-zinc-800 transition-colors ${
+              activeTab === 'orders' ? 'bg-zinc-800 border-l-4 border-green-400' : ''
             }`}
           >
             <ShoppingCart className="w-5 h-5 mr-3" />
-            Pedidos
+            <span className="font-bold uppercase text-sm tracking-wide">Pedidos</span>
           </button>
 
           <button
             onClick={() => setActiveTab('users')}
-            className={`w-full flex items-center px-6 py-3 hover:bg-gray-800 ${
-              activeTab === 'users' ? 'bg-gray-800 border-l-4 border-blue-500' : ''
+            className={`w-full flex items-center px-6 py-3 hover:bg-zinc-800 transition-colors ${
+              activeTab === 'users' ? 'bg-zinc-800 border-l-4 border-green-400' : ''
             }`}
           >
             <Users className="w-5 h-5 mr-3" />
-            Usuários
+            <span className="font-bold uppercase text-sm tracking-wide">Usuários</span>
           </button>
         </nav>
 
-        <div className="absolute bottom-0 left-0 right-0 p-6 border-t border-gray-800">
+        <div className="absolute bottom-0 left-0 right-0 p-6 border-t border-zinc-800">
           <div className="mb-4">
-            <p className="text-sm text-gray-400">Logado como</p>
-            <p className="font-semibold">{user.name}</p>
+            <p className="text-xs text-gray-500 uppercase tracking-wide">Logado como</p>
+            <p className="font-bold text-white">{user.name}</p>
           </div>
-          <Button onClick={handleLogout} variant="outline" className="w-full text-white border-gray-700">
+          <Button onClick={handleLogout} className="w-full bg-red-600 hover:bg-red-700 text-white font-bold">
             <LogOut className="w-4 h-4 mr-2" />
             Sair
           </Button>
@@ -357,7 +357,7 @@ export default function AdminPage() {
       </div>
 
       {/* Main Content */}
-      <div className="ml-64 p-8">
+      <div className="ml-64 p-8 bg-black min-h-screen">
         {/* Dashboard */}
         {activeTab === 'dashboard' && stats && (
           <div>
