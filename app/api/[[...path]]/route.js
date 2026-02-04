@@ -545,7 +545,7 @@ export async function POST(request) {
     
     // Auth - Register
     if (path === 'auth/register') {
-      const { name, email, password } = body;
+      const { name, email, password, phone } = body;
       
       if (!name || !email || !password) {
         return NextResponse.json({ error: 'Todos os campos são obrigatórios' }, { status: 400 });
@@ -562,6 +562,7 @@ export async function POST(request) {
         name,
         email,
         password: hashedPassword,
+        phone: phone || null,
         role: 'customer',
         createdAt: new Date()
       });
@@ -571,7 +572,7 @@ export async function POST(request) {
       return NextResponse.json({
         message: 'Usuário criado com sucesso',
         token,
-        user: { name, email, role: 'customer' }
+        user: { name, email, phone, role: 'customer' }
       });
     }
     
