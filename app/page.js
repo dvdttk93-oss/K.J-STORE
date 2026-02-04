@@ -631,49 +631,68 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12">
+      <footer className="bg-black text-white py-16 border-t border-zinc-800">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
             <div>
-              <div className="flex items-center space-x-3 mb-4">
+              <div className="flex items-center space-x-3 mb-6">
                 <img src="/logo.jpeg" alt="K.J STORE" className="h-12 w-12 object-contain rounded" />
-                <h3 className="text-xl font-bold">K.J STORE</h3>
+                <h3 className="text-2xl font-black tracking-tighter">K.J STORE</h3>
               </div>
-              <p className="text-gray-400">Sua loja de produtos esportivos de alta qualidade</p>
+              <p className="text-gray-400 leading-relaxed">
+                Conectamos o streetwear e o esporte em um só estilo. Importação direta da China.
+              </p>
+              <div className="mt-6">
+                <Badge className="bg-gradient-to-r from-green-400 to-cyan-400 text-black font-bold">
+                  🇨🇳 → 🇧🇷
+                </Badge>
+              </div>
             </div>
+            
             <div>
-              <h4 className="font-semibold mb-4">Categorias</h4>
-              <ul className="space-y-2 text-gray-400">
-                {categories.slice(0, 4).map(category => (
+              <h4 className="font-black text-lg mb-6 uppercase tracking-wide">Categorias</h4>
+              <ul className="space-y-3 text-gray-400">
+                {categories.slice(0, 6).map(category => (
                   <li key={category._id}>
-                    <button onClick={() => setSelectedCategory(category.slug)} className="hover:text-white">
+                    <button onClick={() => setSelectedCategory(category.slug)} className="hover:text-green-400 transition-colors font-medium">
                       {category.name}
                     </button>
                   </li>
                 ))}
               </ul>
             </div>
+            
             <div>
-              <h4 className="font-semibold mb-4">Ajuda</h4>
-              <ul className="space-y-2 text-gray-400">
-                <li><a href="#" className="hover:text-white">Perguntas Frequentes</a></li>
-                <li><a href="#" className="hover:text-white">Frete e Entregas</a></li>
-                <li><a href="#" className="hover:text-white">Trocas e Devoluções</a></li>
-                <li><a href="#" className="hover:text-white">Contato</a></li>
+              <h4 className="font-black text-lg mb-6 uppercase tracking-wide">Ajuda</h4>
+              <ul className="space-y-3 text-gray-400">
+                <li><a href="#" className="hover:text-green-400 transition-colors font-medium">Perguntas Frequentes</a></li>
+                <li><a href="#" className="hover:text-green-400 transition-colors font-medium">Frete e Entregas</a></li>
+                <li><a href="#" className="hover:text-green-400 transition-colors font-medium">Trocas e Devoluções</a></li>
+                <li><a href="#" className="hover:text-green-400 transition-colors font-medium">Contato</a></li>
               </ul>
             </div>
+            
             <div>
-              <h4 className="font-semibold mb-4">Redes Sociais</h4>
-              <ul className="space-y-2 text-gray-400">
-                <li><a href="#" className="hover:text-white">Instagram</a></li>
-                <li><a href="#" className="hover:text-white">Facebook</a></li>
-                <li><a href="#" className="hover:text-white">Twitter</a></li>
-                <li><a href="#" className="hover:text-white">YouTube</a></li>
+              <h4 className="font-black text-lg mb-6 uppercase tracking-wide">Social</h4>
+              <ul className="space-y-3 text-gray-400">
+                <li><a href="#" className="hover:text-green-400 transition-colors font-medium">Instagram</a></li>
+                <li><a href="#" className="hover:text-green-400 transition-colors font-medium">Facebook</a></li>
+                <li><a href="#" className="hover:text-green-400 transition-colors font-medium">Twitter</a></li>
+                <li><a href="#" className="hover:text-green-400 transition-colors font-medium">TikTok</a></li>
               </ul>
             </div>
           </div>
-          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2024 Sport Store. Todos os direitos reservados.</p>
+          
+          <div className="border-t border-zinc-800 pt-8">
+            <div className="flex flex-col md:flex-row justify-between items-center">
+              <p className="text-gray-500 text-sm">&copy; 2024 K.J STORE. Todos os direitos reservados.</p>
+              <div className="flex items-center space-x-4 mt-4 md:mt-0">
+                <span className="text-gray-500 text-sm">Importação direta</span>
+                <Badge variant="outline" className="border-green-400 text-green-400">
+                  AUTÊNTICO
+                </Badge>
+              </div>
+            </div>
           </div>
         </div>
       </footer>
