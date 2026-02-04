@@ -160,6 +160,59 @@ export default function CheckoutPage() {
     window.open(`https://wa.me/55${WHATSAPP_NUMBER}?text=${message}`, '_blank');
   };
 
+  const searchCEP = async (cep) => {
+    // Remove caracteres não numéricos
+    const cleanCEP = cep.replace(/\D/g, '');
+    
+    // Verifica se tem 8 dígitos
+    if (cleanCEP.length !== 8) return;
+    
+    setSearchingCEP(true);
+    
+    try {
+      const response = await fetch(`https://viacep.com.br/ws/${cleanCEP}/json/`);
+      const data = await response.json();
+      
+      if (data.erro) {
+        alert('CEP não encontrado. Verifique o número digitado.');
+        setSearchingCEP(false);
+        return;
+      }
+      
+      // Preenche os campos automaticamente
+      setShippingAddress(prev => ({
+        ...prev,
+        street: data.logradouro || prev.street,
+        neighborhood: data.bairro || prev.neighborhood,
+        city: data.localidade || prev.city,
+        state: data.uf || prev.state,
+        zipCode: cep
+      }));
+      
+      setSearchingCEP(false);
+    } catch (error) {
+      console.error('Erro ao buscar CEP:', error);
+      alert('Erro ao buscar CEP. Tente novamente.');
+      setSearchingCEP(false);
+    }
+  };
+
+  const notifyAdminNewOrder = (orderData) => {
+    // Prepara mensagem para o admin
+    const message = encodeURIComponent(
+      `🔔 *NOVO PEDIDO - K.J STORE*\n\n` +
+      `📦 Pedido: #${orderData.orderId?.toString().slice(-8)}\n` +
+      `👤 Cliente: ${shippingAddress.name}\n` +
+      `📱 Tel: ${shippingAddress.phone}\n` +
+      `💰 Valor: R$ ${orderData.total.toFixed(2)}\n` +
+      `📍 Cidade: ${shippingAddress.city}/${shippingAddress.state}\n\n` +
+      `Acesse o painel admin para mais detalhes!`
+    );
+    
+    // Abre WhatsApp do admin em nova aba
+    window.open(`https://wa.me/55${ADMIN_WHATSAPP}?text=${message}`, '_blank');
+  };
+
   const createOrder = async () => {
     const token = localStorage.getItem('token');
 
