@@ -252,7 +252,10 @@ export default function Home() {
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <div className="flex items-center space-x-8">
-              <h1 className="text-2xl font-bold">K.J STORE</h1>
+              <div className="flex items-center space-x-3">
+                <img src="/logo.jpeg" alt="K.J STORE" className="h-10 w-10 object-contain rounded" />
+                <h1 className="text-2xl font-bold">K.J STORE</h1>
+              </div>
               
               {/* Desktop Navigation */}
               <nav className="hidden md:flex space-x-6">
