@@ -1,6 +1,8 @@
-# 🛒 Sport Store - E-commerce Completo
+# 🛒 K.J STORE - E-commerce Completo
 
-E-commerce moderno e profissional inspirado no estilo Nike. Sistema completo de vendas online com painel administrativo.
+E-commerce moderno e profissional com pagamento via PIX. Sistema completo de vendas online com painel administrativo.
+
+![K.J STORE Logo](public/logo.jpeg)
 
 ## ✨ Funcionalidades
 
