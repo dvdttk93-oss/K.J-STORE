@@ -361,61 +361,61 @@ export default function AdminPage() {
         {/* Dashboard */}
         {activeTab === 'dashboard' && stats && (
           <div>
-            <h2 className="text-3xl font-bold mb-6">Dashboard</h2>
+            <h2 className="text-4xl font-black text-white mb-8 uppercase tracking-tight">Dashboard</h2>
 
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-              <Card>
+              <Card className="bg-zinc-900 border-zinc-800 hover:border-green-400 transition-colors">
                 <CardHeader className="pb-3">
-                  <CardTitle className="text-sm font-medium text-gray-600">Total de Produtos</CardTitle>
+                  <CardTitle className="text-sm font-bold text-gray-400 uppercase tracking-wide">Total de Produtos</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="flex items-center justify-between">
-                    <div className="text-3xl font-bold">{stats.totalProducts}</div>
-                    <Package className="w-8 h-8 text-blue-500" />
+                    <div className="text-4xl font-black text-white">{stats.totalProducts}</div>
+                    <Package className="w-10 h-10 text-green-400" />
                   </div>
                 </CardContent>
               </Card>
 
-              <Card>
+              <Card className="bg-zinc-900 border-zinc-800 hover:border-green-400 transition-colors">
                 <CardHeader className="pb-3">
-                  <CardTitle className="text-sm font-medium text-gray-600">Total de Pedidos</CardTitle>
+                  <CardTitle className="text-sm font-bold text-gray-400 uppercase tracking-wide">Total de Pedidos</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="flex items-center justify-between">
-                    <div className="text-3xl font-bold">{stats.totalOrders}</div>
-                    <ShoppingCart className="w-8 h-8 text-green-500" />
+                    <div className="text-4xl font-black text-white">{stats.totalOrders}</div>
+                    <ShoppingCart className="w-10 h-10 text-cyan-400" />
                   </div>
                 </CardContent>
               </Card>
 
-              <Card>
+              <Card className="bg-zinc-900 border-zinc-800 hover:border-green-400 transition-colors">
                 <CardHeader className="pb-3">
-                  <CardTitle className="text-sm font-medium text-gray-600">Total de Usuários</CardTitle>
+                  <CardTitle className="text-sm font-bold text-gray-400 uppercase tracking-wide">Total de Usuários</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="flex items-center justify-between">
-                    <div className="text-3xl font-bold">{stats.totalUsers}</div>
-                    <Users className="w-8 h-8 text-purple-500" />
+                    <div className="text-4xl font-black text-white">{stats.totalUsers}</div>
+                    <Users className="w-10 h-10 text-purple-400" />
                   </div>
                 </CardContent>
               </Card>
 
-              <Card>
+              <Card className="bg-zinc-900 border-zinc-800 hover:border-green-400 transition-colors">
                 <CardHeader className="pb-3">
-                  <CardTitle className="text-sm font-medium text-gray-600">Receita Total</CardTitle>
+                  <CardTitle className="text-sm font-bold text-gray-400 uppercase tracking-wide">Receita Total</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="flex items-center justify-between">
-                    <div className="text-3xl font-bold">R$ {stats.totalRevenue.toFixed(2)}</div>
-                    <DollarSign className="w-8 h-8 text-yellow-500" />
+                    <div className="text-4xl font-black text-white">R$ {stats.totalRevenue.toFixed(2)}</div>
+                    <DollarSign className="w-10 h-10 text-yellow-400" />
                   </div>
                 </CardContent>
               </Card>
             </div>
 
-            <Card>
+            <Card className="bg-zinc-900 border-zinc-800">
               <CardHeader>
-                <CardTitle>Pedidos Recentes</CardTitle>
+                <CardTitle className="text-white font-black uppercase tracking-wide">Pedidos Recentes</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
