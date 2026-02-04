@@ -282,35 +282,35 @@ export default function Home() {
               {/* Search */}
               <div className="hidden md:flex items-center">
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500" />
                   <Input
                     type="text"
                     placeholder="Buscar produtos..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-10 w-64"
+                    className="pl-10 w-64 bg-zinc-900 border-zinc-800 text-white placeholder:text-gray-500"
                   />
                 </div>
               </div>
               
               {/* Icons */}
-              <button onClick={() => setShowFilters(!showFilters)} className="p-2 hover:bg-gray-100 rounded-full">
+              <button onClick={() => setShowFilters(!showFilters)} className="p-2 hover:bg-zinc-900 text-gray-400 hover:text-green-400 rounded-full transition-colors">
                 <Filter className="w-5 h-5" />
               </button>
               
-              <button className="p-2 hover:bg-gray-100 rounded-full relative">
+              <button className="p-2 hover:bg-zinc-900 text-gray-400 hover:text-green-400 rounded-full relative transition-colors">
                 <Heart className="w-5 h-5" />
                 {wishlistCount > 0 && (
-                  <Badge className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-xs">
+                  <Badge className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-xs bg-gradient-to-r from-green-400 to-cyan-400 text-black">
                     {wishlistCount}
                   </Badge>
                 )}
               </button>
               
-              <button onClick={() => router.push('/carrinho')} className="p-2 hover:bg-gray-100 rounded-full relative">
+              <button onClick={() => router.push('/carrinho')} className="p-2 hover:bg-zinc-900 text-gray-400 hover:text-green-400 rounded-full relative transition-colors">
                 <ShoppingCart className="w-5 h-5" />
                 {cartCount > 0 && (
-                  <Badge className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-xs">
+                  <Badge className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-xs bg-gradient-to-r from-green-400 to-cyan-400 text-black">
                     {cartCount}
                   </Badge>
                 )}
@@ -318,16 +318,16 @@ export default function Home() {
               
               {user ? (
                 <div className="flex items-center space-x-2">
-                  <span className="text-sm hidden md:inline">{user.name}</span>
+                  <span className="text-sm hidden md:inline text-white font-semibold">{user.name}</span>
                   {user.role === 'admin' && (
-                    <Badge variant="secondary">Admin</Badge>
+                    <Badge className="bg-gradient-to-r from-green-400 to-cyan-400 text-black">Admin</Badge>
                   )}
-                  <Button variant="ghost" size="sm" onClick={handleLogout}>
+                  <Button variant="ghost" size="sm" onClick={handleLogout} className="text-gray-400 hover:text-white hover:bg-zinc-900">
                     Sair
                   </Button>
                 </div>
               ) : (
-                <Button onClick={() => setShowAuthModal(true)} size="sm">
+                <Button onClick={() => setShowAuthModal(true)} size="sm" className="bg-gradient-to-r from-green-400 to-cyan-400 text-black font-bold hover:shadow-lg">
                   <User className="w-4 h-4 mr-2" />
                   Entrar
                 </Button>
@@ -336,7 +336,7 @@ export default function Home() {
               {/* Mobile Menu */}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="md:hidden p-2 hover:bg-gray-100 rounded-full"
+                className="md:hidden p-2 hover:bg-zinc-900 text-gray-400 hover:text-green-400 rounded-full transition-colors"
               >
                 {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
               </button>
