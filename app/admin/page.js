@@ -283,8 +283,13 @@ export default function AdminPage() {
       {/* Sidebar */}
       <div className="fixed inset-y-0 left-0 w-64 bg-gray-900 text-white">
         <div className="p-6">
-          <h1 className="text-2xl font-bold">Admin Panel</h1>
-          <p className="text-gray-400 text-sm mt-1">Sport Store</p>
+          <div className="flex items-center space-x-3 mb-2">
+            <img src="/logo.jpeg" alt="K.J STORE" className="h-10 w-10 object-contain rounded" />
+            <div>
+              <h1 className="text-2xl font-bold">Admin Panel</h1>
+            </div>
+          </div>
+          <p className="text-gray-400 text-sm">K.J STORE</p>
         </div>
 
         <nav className="mt-6">
