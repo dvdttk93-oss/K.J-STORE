@@ -624,10 +624,17 @@ export default function Home() {
             
             <form onSubmit={handleAuth} className="space-y-4">
               {authMode === 'register' && (
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Nome</label>
-                  <Input name="name" type="text" required placeholder="Seu nome completo" />
-                </div>
+                <>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Nome</label>
+                    <Input name="name" type="text" required placeholder="Seu nome completo" />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Telefone (WhatsApp)</label>
+                    <Input name="phone" type="tel" required placeholder="(77) 99830-9542" />
+                  </div>
+                </>
               )}
               
               <div>
