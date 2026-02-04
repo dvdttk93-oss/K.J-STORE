@@ -572,9 +572,14 @@ export default function CheckoutPage() {
                       <Clock className="w-5 h-5 text-blue-600" />
                       <span className="font-semibold text-blue-900">Aguardando Pagamento</span>
                     </div>
-                    <p className="text-sm text-blue-700">
+                    <p className="text-sm text-blue-700 mb-3">
                       Seu pedido será processado assim que confirmarmos o pagamento via PIX.
                     </p>
+                    <div className="bg-green-50 border border-green-200 rounded-lg p-3 mt-3">
+                      <p className="text-sm text-green-800 text-center">
+                        ✅ Notificação enviada para o WhatsApp da loja!
+                      </p>
+                    </div>
                   </div>
 
                   <div className="bg-gray-50 rounded-lg p-4 mb-6 text-left">
