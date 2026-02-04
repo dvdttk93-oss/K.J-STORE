@@ -379,13 +379,35 @@ export default function CheckoutPage() {
                       {qrCodeUrl && (
                         <div className="bg-white rounded-lg p-6 mb-6 flex flex-col items-center">
                           <QrCodeIcon className="w-8 h-8 text-blue-600 mb-3" />
+                          <p className="text-sm font-semibold text-gray-700 mb-3">Escaneie com o app do seu banco</p>
                           <img 
                             src={qrCodeUrl} 
                             alt="QR Code PIX" 
                             className="w-64 h-64 border-4 border-gray-200 rounded-lg shadow-lg mb-4"
                           />
-                          <p className="text-sm text-gray-600 text-center">
-                            Abra o app do seu banco e escaneie o QR Code
+                          
+                          {/* Código PIX Copia e Cola */}
+                          <div className="w-full bg-gray-50 rounded-lg p-4 mb-3">
+                            <p className="text-xs text-gray-600 mb-2 text-center font-semibold">Ou copie o código PIX Copia e Cola:</p>
+                            <div className="bg-white border-2 border-dashed border-gray-300 rounded p-2 mb-2">
+                              <code className="text-xs text-gray-800 break-all block">{pixCode}</code>
+                            </div>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={copyPixCode}
+                              className="w-full"
+                            >
+                              {pixCodeCopied ? (
+                                <><CheckCircle className="w-4 h-4 mr-1 text-green-600" /> Código Copiado!</>
+                              ) : (
+                                <><Copy className="w-4 h-4 mr-1" /> Copiar Código PIX</>
+                              )}
+                            </Button>
+                          </div>
+                          
+                          <p className="text-xs text-gray-500 text-center">
+                            O código acima já inclui o valor e dados do pagamento
                           </p>
                         </div>
                       )}
