@@ -511,6 +511,16 @@ export default function CheckoutPage() {
                     <Button onClick={() => router.push('/')} className="w-full" size="lg">
                       Voltar para a Loja
                     </Button>
+                    
+                    <Button 
+                      onClick={openWhatsApp}
+                      className="w-full bg-green-600 hover:bg-green-700" 
+                      size="lg"
+                    >
+                      <MessageCircle className="w-5 h-5 mr-2" />
+                      Falar com a Loja no WhatsApp
+                    </Button>
+                    
                     <Button onClick={() => router.push('/minha-conta')} variant="outline" className="w-full" size="lg">
                       Ver Meus Pedidos
                     </Button>
