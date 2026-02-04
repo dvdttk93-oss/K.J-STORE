@@ -18,6 +18,8 @@ export default function CheckoutPage() {
   const [orderCreated, setOrderCreated] = useState(false);
   const [orderId, setOrderId] = useState(null);
   const [pixKeyCopied, setPixKeyCopied] = useState(false);
+  const [qrCodeUrl, setQrCodeUrl] = useState('');
+  const canvasRef = useRef(null);
 
   const PIX_KEY = '07995461518';
 
