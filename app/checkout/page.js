@@ -336,18 +336,34 @@ export default function CheckoutPage() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-6">
-                    <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-6 text-center">
-                      <div className="mb-4">
-                        <Badge className="bg-blue-600 text-lg px-4 py-2">PIX</Badge>
+                    <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-6">
+                      <div className="text-center mb-6">
+                        <Badge className="bg-blue-600 text-lg px-4 py-2 mb-4">PIX</Badge>
+                        <p className="text-gray-700 font-semibold text-lg">
+                          Escaneie o QR Code ou copie a chave PIX
+                        </p>
                       </div>
-                      <p className="text-gray-700 mb-4">
-                        Copie a chave PIX abaixo e faça o pagamento no seu banco:
-                      </p>
-                      
+
+                      {/* QR Code */}
+                      {qrCodeUrl && (
+                        <div className="bg-white rounded-lg p-6 mb-6 flex flex-col items-center">
+                          <QrCodeIcon className="w-8 h-8 text-blue-600 mb-3" />
+                          <img 
+                            src={qrCodeUrl} 
+                            alt="QR Code PIX" 
+                            className="w-64 h-64 border-4 border-gray-200 rounded-lg shadow-lg mb-4"
+                          />
+                          <p className="text-sm text-gray-600 text-center">
+                            Abra o app do seu banco e escaneie o QR Code
+                          </p>
+                        </div>
+                      )}
+
+                      {/* Chave PIX */}
                       <div className="bg-white rounded-lg p-4 mb-4">
-                        <p className="text-sm text-gray-600 mb-2">Chave PIX (Telefone)</p>
+                        <p className="text-sm text-gray-600 mb-2 text-center font-semibold">Ou copie a chave PIX:</p>
                         <div className="flex items-center justify-center gap-2">
-                          <code className="text-2xl font-bold text-gray-900">{PIX_KEY}</code>
+                          <code className="text-xl font-bold text-gray-900 bg-gray-100 px-4 py-2 rounded">{PIX_KEY}</code>
                           <Button
                             variant="outline"
                             size="sm"
@@ -362,13 +378,21 @@ export default function CheckoutPage() {
                         </div>
                       </div>
 
-                      <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-4">
+                      {/* Valor */}
+                      <div className="bg-green-50 border-2 border-green-200 rounded-lg p-4 mb-4">
+                        <p className="text-center mb-2 text-sm text-green-800 font-semibold">Valor a Pagar:</p>
+                        <p className="text-center text-3xl font-bold text-green-700">
+                          R$ {calculateTotal().toFixed(2)}
+                        </p>
+                      </div>
+
+                      <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
                         <p className="text-sm text-yellow-800 font-semibold mb-2">⚠️ Importante:</p>
-                        <ul className="text-sm text-yellow-700 text-left space-y-1">
-                          <li>• O valor a ser pago é: <strong>R$ {calculateTotal().toFixed(2)}</strong></li>
-                          <li>• Faça o pagamento para a chave PIX acima</li>
+                        <ul className="text-sm text-yellow-700 space-y-1">
+                          <li>• Escaneie o QR Code ou copie a chave PIX</li>
+                          <li>• Pague exatamente: <strong>R$ {calculateTotal().toFixed(2)}</strong></li>
                           <li>• Após o pagamento, clique em "Confirmar Pedido"</li>
-                          <li>• Seu pedido será processado em até 2 horas úteis</li>
+                          <li>• Processamento em até 2 horas úteis</li>
                         </ul>
                       </div>
                     </div>
@@ -378,8 +402,8 @@ export default function CheckoutPage() {
                       <ol className="text-sm text-gray-600 space-y-2 list-decimal list-inside">
                         <li>Abra o aplicativo do seu banco</li>
                         <li>Escolha a opção PIX</li>
-                        <li>Selecione "Copiar e Colar" ou "Chave PIX"</li>
-                        <li>Cole a chave copiada: <strong>{PIX_KEY}</strong></li>
+                        <li><strong>Opção 1:</strong> Escaneie o QR Code acima</li>
+                        <li><strong>Opção 2:</strong> Copie e cole a chave PIX: <code className="bg-gray-100 px-2 py-1 rounded">{PIX_KEY}</code></li>
                         <li>Confira o valor: <strong>R$ {calculateTotal().toFixed(2)}</strong></li>
                         <li>Confirme o pagamento</li>
                         <li>Volte aqui e clique em "Confirmar Pedido"</li>
