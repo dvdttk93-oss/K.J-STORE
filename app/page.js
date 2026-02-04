@@ -568,7 +568,10 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
-              <h3 className="text-xl font-bold mb-4">K.J STORE</h3>
+              <div className="flex items-center space-x-3 mb-4">
+                <img src="/logo.jpeg" alt="K.J STORE" className="h-12 w-12 object-contain rounded" />
+                <h3 className="text-xl font-bold">K.J STORE</h3>
+              </div>
               <p className="text-gray-400">Sua loja de produtos esportivos de alta qualidade</p>
             </div>
             <div>
