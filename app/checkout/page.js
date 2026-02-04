@@ -193,7 +193,10 @@ export default function CheckoutPage() {
               <ArrowLeft className="w-5 h-5 mr-2" />
               Voltar
             </button>
-            <h1 className="text-2xl font-bold">K.J STORE</h1>
+            <div className="flex items-center space-x-2">
+              <img src="/logo.jpeg" alt="K.J STORE" className="h-8 w-8 object-contain rounded" />
+              <h1 className="text-2xl font-bold">K.J STORE</h1>
+            </div>
             <div className="w-32"></div>
           </div>
         </div>
