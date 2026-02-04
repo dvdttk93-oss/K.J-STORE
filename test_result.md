@@ -299,15 +299,15 @@ backend:
 
   - task: "Wishlist Remove Item"
     implemented: true
-    working: "NA"
+    working: true
     file: "app/api/[[...path]]/route.js"
     stuck_count: 0
     priority: "low"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
-      - working: "NA"
+      - working: true
         agent: "testing"
-        comment: "DELETE /api/wishlist/:id endpoint implemented but not tested in current test suite. Needs specific testing."
+        comment: "DELETE /api/wishlist/:id working correctly. Wishlist item removed successfully with proper authentication and user validation."
 
   - task: "Orders Create"
     implemented: true
