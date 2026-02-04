@@ -395,15 +395,15 @@ backend:
 
   - task: "Admin Update Order Status"
     implemented: true
-    working: "NA"
+    working: true
     file: "app/api/[[...path]]/route.js"
     stuck_count: 0
     priority: "medium"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
-      - working: "NA"
+      - working: true
         agent: "testing"
-        comment: "PUT /api/admin/orders/:id endpoint implemented but not tested in current test suite. Needs specific testing."
+        comment: "PUT /api/admin/orders/:id working correctly. Order status updated successfully with proper admin authentication and validation."
 
   - task: "Admin Get All Users"
     implemented: true
