@@ -251,27 +251,27 @@ backend:
 
   - task: "Cart Update Item Quantity"
     implemented: true
-    working: "NA"
+    working: true
     file: "app/api/[[...path]]/route.js"
     stuck_count: 0
     priority: "medium"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
-      - working: "NA"
+      - working: true
         agent: "testing"
-        comment: "PUT /api/cart/:id endpoint implemented but not tested in current test suite. Needs specific testing."
+        comment: "PUT /api/cart/:id working correctly. Cart item quantity updated successfully with proper authentication and validation."
 
   - task: "Cart Remove Item"
     implemented: true
-    working: "NA"
+    working: true
     file: "app/api/[[...path]]/route.js"
     stuck_count: 0
     priority: "medium"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
-      - working: "NA"
+      - working: true
         agent: "testing"
-        comment: "DELETE /api/cart/:id endpoint implemented but not tested in current test suite. Needs specific testing."
+        comment: "DELETE /api/cart/:id working correctly. Cart item removed successfully with proper authentication and user validation."
 
   - task: "Wishlist Add Item"
     implemented: true
