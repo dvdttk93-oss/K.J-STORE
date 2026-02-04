@@ -118,9 +118,10 @@ yarn dev
 
 ## 👤 Credenciais de Acesso
 
-### Administrador Padrão
+### Administrador Padrão (K.J STORE Admin)
 - **Email**: admin@ecommerce.com
 - **Senha**: admin123
+- **Acesso**: http://localhost:3000/admin
 
 ### Criar Novo Cliente
 Faça o registro direto no site através do botão "Entrar" → "Cadastrar"
