@@ -702,6 +702,7 @@ export async function POST(request) {
         items,
         shippingAddress,
         paymentMethod,
+        pixKey: body.pixKey || null,
         total,
         status: 'pending',
         createdAt: new Date()
