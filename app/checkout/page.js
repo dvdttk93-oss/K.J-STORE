@@ -52,8 +52,21 @@ export default function CheckoutPage() {
 
   const generateQRCode = async () => {
     try {
-      // Gerar QR Code com a chave PIX
-      const url = await QRCode.toDataURL(PIX_KEY, {
+      const totalValue = calculateTotal();
+      
+      // Criar código PIX EMV válido
+      const pixPayload = createStaticPix({
+        merchantName: 'K.J STORE',
+        merchantCity: 'SAO PAULO',
+        pixKey: PIX_KEY,
+        infoAdicional: `Pedido K.J STORE`,
+        transactionAmount: totalValue
+      });
+      
+      setPixCode(pixPayload.toBRCode());
+      
+      // Gerar QR Code com o código PIX válido
+      const url = await QRCode.toDataURL(pixPayload.toBRCode(), {
         width: 300,
         margin: 2,
         color: {
