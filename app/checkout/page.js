@@ -147,6 +147,17 @@ export default function CheckoutPage() {
     setTimeout(() => setPixKeyCopied(false), 2000);
   };
 
+  const copyPixCode = () => {
+    navigator.clipboard.writeText(pixCode);
+    setPixCodeCopied(true);
+    setTimeout(() => setPixCodeCopied(false), 2000);
+  };
+
+  const openWhatsApp = () => {
+    const message = encodeURIComponent(`Olá! Acabei de fazer um pedido na K.J STORE (Pedido #${orderId?.toString().slice(-8)}). Valor: R$ ${calculateTotal().toFixed(2)}`);
+    window.open(`https://wa.me/55${WHATSAPP_NUMBER}?text=${message}`, '_blank');
+  };
+
   const createOrder = async () => {
     const token = localStorage.getItem('token');
 
