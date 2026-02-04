@@ -345,12 +345,29 @@ export default function CheckoutPage() {
 
                       <div>
                         <label className="block text-sm font-medium mb-1">CEP *</label>
-                        <Input
-                          required
-                          value={shippingAddress.zipCode}
-                          onChange={(e) => setShippingAddress({ ...shippingAddress, zipCode: e.target.value })}
-                          placeholder="00000-000"
-                        />
+                        <div className="relative">
+                          <Input
+                            required
+                            value={shippingAddress.zipCode}
+                            onChange={(e) => {
+                              const value = e.target.value;
+                              setShippingAddress({ ...shippingAddress, zipCode: value });
+                              
+                              // Busca automática quando digitar 8 números
+                              if (value.replace(/\D/g, '').length === 8) {
+                                searchCEP(value);
+                              }
+                            }}
+                            placeholder="00000-000"
+                            maxLength={9}
+                          />
+                          {searchingCEP && (
+                            <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-900"></div>
+                            </div>
+                          )}
+                        </div>
+                        <p className="text-xs text-gray-500 mt-1">Digite o CEP e preencheremos o endereço automaticamente</p>
                       </div>
 
                       <div className="col-span-2">
