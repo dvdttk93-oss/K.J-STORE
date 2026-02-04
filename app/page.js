@@ -247,21 +247,21 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-white border-b border-gray-200">
+      <header className="sticky top-0 z-50 bg-black/95 backdrop-blur-md border-b border-zinc-800">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <div className="flex items-center space-x-8">
               <div className="flex items-center space-x-3">
                 <img src="/logo.jpeg" alt="K.J STORE" className="h-10 w-10 object-contain rounded" />
-                <h1 className="text-2xl font-bold">K.J STORE</h1>
+                <h1 className="text-2xl font-black text-white tracking-tighter">K.J STORE</h1>
               </div>
               
               {/* Desktop Navigation */}
               <nav className="hidden md:flex space-x-6">
                 <button
                   onClick={() => setSelectedCategory(null)}
-                  className={`text-sm font-medium hover:text-gray-900 ${!selectedCategory ? 'text-gray-900 underline underline-offset-4' : 'text-gray-600'}`}
+                  className={`text-sm font-bold uppercase tracking-wide hover:text-green-400 transition-colors ${!selectedCategory ? 'text-green-400' : 'text-gray-400'}`}
                 >
                   Todos
                 </button>
@@ -269,7 +269,7 @@ export default function Home() {
                   <button
                     key={category._id}
                     onClick={() => setSelectedCategory(category.slug)}
-                    className={`text-sm font-medium hover:text-gray-900 ${selectedCategory === category.slug ? 'text-gray-900 underline underline-offset-4' : 'text-gray-600'}`}
+                    className={`text-sm font-bold uppercase tracking-wide hover:text-green-400 transition-colors ${selectedCategory === category.slug ? 'text-green-400' : 'text-gray-400'}`}
                   >
                     {category.name}
                   </button>
