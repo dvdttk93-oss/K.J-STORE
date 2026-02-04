@@ -302,7 +302,7 @@ export default function Home() {
                 )}
               </button>
               
-              <button className="p-2 hover:bg-gray-100 rounded-full relative">
+              <button onClick={() => router.push('/carrinho')} className="p-2 hover:bg-gray-100 rounded-full relative">
                 <ShoppingCart className="w-5 h-5" />
                 {cartCount > 0 && (
                   <Badge className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-xs">
