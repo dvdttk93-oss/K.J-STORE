@@ -518,7 +518,7 @@ class EcommerceAPITester:
             "sizes": ["40", "41", "42"],
             "colors": ["Preto", "Branco"],
             "stock": 25,
-            "featured": false
+            "featured": False
         }
         
         response = self.make_request("POST", "admin/products", data, token=self.admin_token)
