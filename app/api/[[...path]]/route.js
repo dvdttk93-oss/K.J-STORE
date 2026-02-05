@@ -696,13 +696,16 @@ export async function POST(request) {
         return NextResponse.json({ error: 'Token inválido' }, { status: 401 });
       }
       
-      const { items, shippingAddress, paymentMethod, total } = body;
+      const { items, shippingAddress, paymentMethod, shipping, subtotal, shippingCost, total } = body;
       
       const order = {
         userEmail: decoded.email,
         items,
         shippingAddress,
         paymentMethod,
+        shipping: shipping || null,
+        subtotal: subtotal || total,
+        shippingCost: shippingCost || 0,
         pixKey: body.pixKey || null,
         total,
         status: 'pending',
