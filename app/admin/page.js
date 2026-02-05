@@ -655,7 +655,7 @@ export default function AdminPage() {
             <form onSubmit={handleSaveProduct} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="col-span-2">
-                  <label className="block text-sm font-medium mb-1">Nome do Produto</label>
+                  <label className="block text-sm font-medium mb-1">Nome do Produto *</label>
                   <Input
                     name="name"
                     required
@@ -665,7 +665,7 @@ export default function AdminPage() {
                 </div>
 
                 <div className="col-span-2">
-                  <label className="block text-sm font-medium mb-1">Descrição</label>
+                  <label className="block text-sm font-medium mb-1">Descrição *</label>
                   <textarea
                     name="description"
                     required
@@ -676,7 +676,7 @@ export default function AdminPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-1">Preço (R$)</label>
+                  <label className="block text-sm font-medium mb-1">Preço (R$) *</label>
                   <Input
                     name="price"
                     type="number"
@@ -688,7 +688,7 @@ export default function AdminPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-1">Preço Original (R$)</label>
+                  <label className="block text-sm font-medium mb-1">Preço Original (R$) *</label>
                   <Input
                     name="originalPrice"
                     type="number"
@@ -700,7 +700,7 @@ export default function AdminPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-1">Categoria</label>
+                  <label className="block text-sm font-medium mb-1">Categoria *</label>
                   <Input
                     name="category"
                     required
@@ -710,7 +710,7 @@ export default function AdminPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-1">Estoque</label>
+                  <label className="block text-sm font-medium mb-1">Estoque *</label>
                   <Input
                     name="stock"
                     type="number"
@@ -720,18 +720,47 @@ export default function AdminPage() {
                   />
                 </div>
 
+                <div>
+                  <label className="block text-sm font-medium mb-1">Avaliação (Estrelas) *</label>
+                  <Input
+                    name="rating"
+                    type="number"
+                    step="0.1"
+                    min="0"
+                    max="5"
+                    required
+                    defaultValue={editingProduct?.rating || 4.5}
+                    placeholder="4.5"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">De 0.0 a 5.0 estrelas</p>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-1">Número de Avaliações *</label>
+                  <Input
+                    name="reviews"
+                    type="number"
+                    min="0"
+                    required
+                    defaultValue={editingProduct?.reviews || 0}
+                    placeholder="156"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">Quantas pessoas avaliaram</p>
+                </div>
+
                 <div className="col-span-2">
-                  <label className="block text-sm font-medium mb-1">URLs das Imagens (separadas por vírgula)</label>
+                  <label className="block text-sm font-medium mb-1">URLs das Imagens (separadas por vírgula) *</label>
                   <Input
                     name="images"
                     required
                     defaultValue={editingProduct?.images?.join(', ')}
                     placeholder="https://image1.jpg, https://image2.jpg"
                   />
+                  <p className="text-xs text-gray-500 mt-1">URLs públicas separadas por vírgula</p>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-1">Tamanhos (separados por vírgula)</label>
+                  <label className="block text-sm font-medium mb-1">Tamanhos (separados por vírgula) *</label>
                   <Input
                     name="sizes"
                     required
@@ -741,7 +770,7 @@ export default function AdminPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-1">Cores (separadas por vírgula)</label>
+                  <label className="block text-sm font-medium mb-1">Cores (separadas por vírgula) *</label>
                   <Input
                     name="colors"
                     required
@@ -758,14 +787,14 @@ export default function AdminPage() {
                       defaultChecked={editingProduct?.featured}
                       className="rounded"
                     />
-                    <span className="text-sm font-medium">Produto em Destaque</span>
+                    <span className="text-sm font-medium">Produto em Destaque (aparece na home)</span>
                   </label>
                 </div>
               </div>
 
               <div className="flex space-x-4 pt-4">
-                <Button type="submit" className="flex-1">
-                  {editingProduct ? 'Atualizar Produto' : 'Criar Produto'}
+                <Button type="submit" className="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold">
+                  {editingProduct ? '✓ Salvar Alterações' : '+ Criar Produto'}
                 </Button>
                 <Button
                   type="button"
