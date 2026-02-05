@@ -757,12 +757,16 @@ export default function CheckoutPage() {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Frete</span>
-                      <span className="font-semibold text-green-600">Grátis</span>
+                      <span className="font-semibold text-green-600">
+                        {selectedShipping ? `R$ ${selectedShipping.price.toFixed(2)}` : 'Calcular'}
+                      </span>
                     </div>
                     <div className="border-t pt-2">
                       <div className="flex justify-between text-lg">
                         <span className="font-bold">Total</span>
-                        <span className="font-bold text-xl">R$ {calculateTotal().toFixed(2)}</span>
+                        <span className="font-bold text-xl">
+                          R$ {(calculateTotal() + (selectedShipping?.price || 0)).toFixed(2)}
+                        </span>
                       </div>
                     </div>
                   </div>
