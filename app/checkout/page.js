@@ -480,6 +480,65 @@ export default function CheckoutPage() {
                       Continuar para Pagamento
                     </Button>
                   </form>
+                  
+                  {/* Opções de Frete */}
+                  {shippingOptions.length > 0 && (
+                    <div className="mt-6 p-4 bg-blue-50 border-2 border-blue-200 rounded-lg">
+                      <h3 className="font-bold text-lg mb-4 text-blue-900">📦 Escolha o Frete:</h3>
+                      
+                      {loadingShipping ? (
+                        <div className="flex items-center justify-center py-4">
+                          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                          <span className="ml-3 text-blue-700">Calculando frete...</span>
+                        </div>
+                      ) : (
+                        <div className="space-y-3">
+                          {shippingOptions.map((option) => (
+                            <button
+                              key={option.code}
+                              type="button"
+                              onClick={() => setSelectedShipping(option)}
+                              className={`w-full p-4 border-2 rounded-lg text-left transition-all ${
+                                selectedShipping?.code === option.code
+                                  ? 'border-blue-600 bg-blue-100'
+                                  : 'border-gray-300 hover:border-blue-400'
+                              }`}
+                            >
+                              <div className="flex items-center justify-between">
+                                <div>
+                                  <div className="flex items-center gap-2">
+                                    <span className="font-bold text-lg">{option.service}</span>
+                                    {option.service === 'SEDEX' && (
+                                      <Badge className="bg-red-500">Mais Rápido</Badge>
+                                    )}
+                                    {option.service === 'PAC' && (
+                                      <Badge className="bg-green-500">Mais Barato</Badge>
+                                    )}
+                                  </div>
+                                  <p className="text-sm text-gray-600 mt-1">
+                                    Entrega em até <strong>{option.deliveryTime} dias úteis</strong>
+                                  </p>
+                                </div>
+                                <div className="text-right">
+                                  <div className="text-2xl font-bold text-blue-700">
+                                    R$ {option.price.toFixed(2)}
+                                  </div>
+                                </div>
+                              </div>
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                      
+                      {selectedShipping && (
+                        <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
+                          <p className="text-sm text-green-800 font-semibold">
+                            ✓ Frete selecionado: {selectedShipping.service} - R$ {selectedShipping.price.toFixed(2)}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             )}
