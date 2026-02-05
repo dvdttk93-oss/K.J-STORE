@@ -137,18 +137,60 @@ export default function AdminPage() {
     e.preventDefault();
     const formData = new FormData(e.target);
     
+    // Validar dados antes de enviar
+    const rating = parseFloat(formData.get('rating'));
+    const reviews = parseInt(formData.get('reviews'));
+    
+    if (rating < 0 || rating > 5) {
+      alert('Avaliação deve estar entre 0 e 5 estrelas');
+      return;
+    }
+    
+    if (reviews < 0) {
+      alert('Número de avaliações não pode ser negativo');
+      return;
+    }
+    
     const productData = {
-      name: formData.get('name'),
-      description: formData.get('description'),
+      name: formData.get('name').trim(),
+      description: formData.get('description').trim(),
       price: parseFloat(formData.get('price')),
       originalPrice: parseFloat(formData.get('originalPrice')),
-      category: formData.get('category'),
-      images: formData.get('images').split(',').map(img => img.trim()),
-      sizes: formData.get('sizes').split(',').map(s => s.trim()),
-      colors: formData.get('colors').split(',').map(c => c.trim()),
+      category: formData.get('category').trim(),
+      images: formData.get('images').split(',').map(img => img.trim()).filter(img => img),
+      sizes: formData.get('sizes').split(',').map(s => s.trim()).filter(s => s),
+      colors: formData.get('colors').split(',').map(c => c.trim()).filter(c => c),
       stock: parseInt(formData.get('stock')),
+      rating: rating,
+      reviews: reviews,
       featured: formData.get('featured') === 'on'
     };
+
+    // Validações adicionais
+    if (!productData.name || productData.name.length < 3) {
+      alert('Nome do produto deve ter pelo menos 3 caracteres');
+      return;
+    }
+    
+    if (!productData.description || productData.description.length < 10) {
+      alert('Descrição deve ter pelo menos 10 caracteres');
+      return;
+    }
+    
+    if (productData.images.length === 0) {
+      alert('Adicione pelo menos uma imagem');
+      return;
+    }
+    
+    if (productData.sizes.length === 0) {
+      alert('Adicione pelo menos um tamanho');
+      return;
+    }
+    
+    if (productData.colors.length === 0) {
+      alert('Adicione pelo menos uma cor');
+      return;
+    }
 
     const token = localStorage.getItem('token');
 
@@ -169,16 +211,17 @@ export default function AdminPage() {
       });
 
       if (response.ok) {
-        alert(editingProduct ? 'Produto atualizado!' : 'Produto criado!');
+        alert(editingProduct ? '✓ Produto atualizado com sucesso!' : '✓ Produto criado com sucesso!');
         setShowProductModal(false);
         setEditingProduct(null);
         loadData();
       } else {
-        alert('Erro ao salvar produto');
+        const error = await response.json();
+        alert('Erro ao salvar produto: ' + (error.error || 'Erro desconhecido'));
       }
     } catch (error) {
       console.error('Erro ao salvar produto:', error);
-      alert('Erro ao processar solicitação');
+      alert('Erro ao processar solicitação. Verifique os dados e tente novamente.');
     }
   };
 
