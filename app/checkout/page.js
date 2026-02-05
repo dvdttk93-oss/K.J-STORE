@@ -193,10 +193,52 @@ export default function CheckoutPage() {
       }));
       
       setSearchingCEP(false);
+      
+      // Calcular frete automaticamente após preencher CEP
+      calculateShipping(cep);
     } catch (error) {
       console.error('Erro ao buscar CEP:', error);
       alert('Erro ao buscar CEP. Tente novamente.');
       setSearchingCEP(false);
+    }
+  };
+
+  const calculateShipping = async (cep) => {
+    setLoadingShipping(true);
+    
+    try {
+      // Calcular peso total do carrinho (estimativa: 500g por item)
+      const totalWeight = cart.reduce((sum, item) => sum + (item.quantity * 0.5), 0);
+      const totalValue = calculateTotal();
+      
+      const response = await fetch('/api/shipping/calculate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          cep: cep.replace(/\D/g, ''),
+          weight: totalWeight,
+          value: totalValue
+        })
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        setShippingOptions(data.options || []);
+        
+        // Selecionar automaticamente a opção mais barata
+        if (data.options && data.options.length > 0) {
+          const cheapest = data.options.reduce((prev, current) => 
+            prev.price < current.price ? prev : current
+          );
+          setSelectedShipping(cheapest);
+        }
+      } else {
+        console.error('Erro ao calcular frete');
+      }
+    } catch (error) {
+      console.error('Erro ao calcular frete:', error);
+    } finally {
+      setLoadingShipping(false);
     }
   };
 
