@@ -259,6 +259,11 @@ export default function CheckoutPage() {
   };
 
   const createOrder = async () => {
+    if (!selectedShipping) {
+      alert('Por favor, selecione uma opção de frete antes de continuar.');
+      return;
+    }
+
     const token = localStorage.getItem('token');
 
     const orderData = {
@@ -272,7 +277,14 @@ export default function CheckoutPage() {
       })),
       shippingAddress,
       paymentMethod: 'pix',
-      total: calculateTotal(),
+      shipping: {
+        service: selectedShipping.service,
+        price: selectedShipping.price,
+        deliveryTime: selectedShipping.deliveryTime
+      },
+      subtotal: calculateTotal(),
+      shippingCost: selectedShipping.price,
+      total: calculateTotal() + selectedShipping.price,
       pixKey: PIX_KEY
     };
 
@@ -296,7 +308,7 @@ export default function CheckoutPage() {
         setTimeout(() => {
           notifyAdminNewOrder({
             orderId: data.orderId,
-            total: calculateTotal()
+            total: calculateTotal() + selectedShipping.price
           });
         }, 1000);
       } else {
