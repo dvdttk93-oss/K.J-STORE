@@ -14,7 +14,7 @@ import { calcularPrecoPrazo } from 'correios-brasil';
 
 // Configurações da loja (ajuste conforme necessário)
 const STORE_CONFIG = {
-  cepOrigem: '41940570', // CEP de origem (Salvador - BA)
+  cepOrigem: '47807064', // CEP de origem (Barreiras - BA)
   altura: 10, // cm
   largura: 20, // cm
   comprimento: 30, // cm
