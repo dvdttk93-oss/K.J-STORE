@@ -24,6 +24,9 @@ export default function CheckoutPage() {
   const [pixCode, setPixCode] = useState('');
   const canvasRef = useRef(null);
   const [searchingCEP, setSearchingCEP] = useState(false);
+  const [shippingOptions, setShippingOptions] = useState([]);
+  const [selectedShipping, setSelectedShipping] = useState(null);
+  const [loadingShipping, setLoadingShipping] = useState(false);
   const WHATSAPP_NUMBER = '77998309542';
   const ADMIN_WHATSAPP = '77998309542'; // WhatsApp para receber notificações
 
