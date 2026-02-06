@@ -318,6 +318,15 @@ export default function Home() {
               
               {user ? (
                 <div className="flex items-center space-x-2">
+                  <Button
+                    onClick={() => router.push('/minha-conta')}
+                    variant="ghost"
+                    size="sm"
+                    className="text-gray-400 hover:text-green-400 hover:bg-zinc-900 font-bold"
+                  >
+                    📦 Minhas Compras
+                  </Button>
+                  
                   <span className="text-sm hidden md:inline text-white font-semibold">{user.name}</span>
                   {user.role === 'admin' && (
                     <>
