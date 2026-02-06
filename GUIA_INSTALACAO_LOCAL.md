@@ -4,7 +4,7 @@
 
 ### **Opção A: Download via Code Server (MAIS FÁCIL)**
 
-1. Acesse: https://nike-inspired-46.preview.emergentagent.com/proxy/code/
+1. Acesse: https://kjstore-shop.preview.emergentagent.com/proxy/code/
 2. Baixe o arquivo: `/tmp/ecommerce-sport-store.tar.gz`
 3. Extraia no seu computador:
    ```bash
@@ -306,7 +306,7 @@ yarn dev
 
 Todos os arquivos estão disponíveis em:
 ```
-https://nike-inspired-46.preview.emergentagent.com/proxy/code/
+https://kjstore-shop.preview.emergentagent.com/proxy/code/
 ```
 
 Navegue até a pasta `/app` e baixe os seguintes arquivos:

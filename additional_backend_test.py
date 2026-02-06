@@ -8,7 +8,7 @@ import requests
 import json
 import sys
 
-BASE_URL = "https://nike-inspired-46.preview.emergentagent.com/api"
+BASE_URL = "https://kjstore-shop.preview.emergentagent.com/api"
 
 class AdditionalAPITester:
     def __init__(self):

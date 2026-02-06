@@ -11,7 +11,7 @@ import os
 from datetime import datetime
 
 # Get base URL from environment
-BASE_URL = "https://nike-inspired-46.preview.emergentagent.com/api"
+BASE_URL = "https://kjstore-shop.preview.emergentagent.com/api"
 
 class EcommerceAPITester:
     def __init__(self):
