@@ -817,11 +817,31 @@ export default function Home() {
             
             <div className="grid md:grid-cols-2 gap-6 md:gap-8">
               <div>
+                {/* Imagem principal */}
                 <img
                   src={selectedProduct.images[0]}
                   alt={selectedProduct.name}
-                  className="w-full rounded-lg"
+                  className="w-full rounded-lg mb-4"
                 />
+                {/* Galeria de imagens (se houver mais de uma) */}
+                {selectedProduct.images.length > 1 && (
+                  <div className="grid grid-cols-4 gap-2">
+                    {selectedProduct.images.map((img, index) => (
+                      <img
+                        key={index}
+                        src={img}
+                        alt={`${selectedProduct.name} - ${index + 1}`}
+                        className="w-full h-20 object-cover rounded cursor-pointer hover:opacity-80 border-2 border-transparent hover:border-green-400 transition-all"
+                        onClick={() => {
+                          // Trocar imagem principal
+                          const newImages = [...selectedProduct.images];
+                          [newImages[0], newImages[index]] = [newImages[index], newImages[0]];
+                          setSelectedProduct({ ...selectedProduct, images: newImages });
+                        }}
+                      />
+                    ))}
+                  </div>
+                )}
               </div>
               
               <div>
