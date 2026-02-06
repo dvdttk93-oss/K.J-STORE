@@ -543,8 +543,8 @@ export default function AdminPage() {
         {activeTab === 'categories' && (
           <div>
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-3xl font-bold">Categorias</h2>
-              <Button onClick={() => setShowCategoryModal(true)}>
+              <h2 className="text-3xl font-bold text-white">Categorias</h2>
+              <Button onClick={() => setShowCategoryModal(true)} className="bg-green-500 hover:bg-green-600 text-white font-bold">
                 <Plus className="w-4 h-4 mr-2" />
                 Nova Categoria
               </Button>
@@ -552,10 +552,19 @@ export default function AdminPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {categories.map(category => (
-                <Card key={category._id}>
+                <Card key={category._id} className="bg-zinc-900 border-zinc-800 hover:border-green-400 transition-colors">
                   <CardContent className="p-6">
-                    <h3 className="font-bold text-xl mb-2">{category.name}</h3>
-                    <p className="text-gray-600 text-sm">Slug: {category.slug}</p>
+                    <h3 className="font-bold text-xl mb-2 text-white">{category.name}</h3>
+                    <p className="text-gray-400 text-sm mb-4">Slug: {category.slug}</p>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="w-full text-red-500 border-red-500 hover:bg-red-500 hover:text-white"
+                      onClick={() => handleDeleteCategory(category._id)}
+                    >
+                      <Trash2 className="w-4 h-4 mr-2" />
+                      Excluir Categoria
+                    </Button>
                   </CardContent>
                 </Card>
               ))}
