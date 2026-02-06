@@ -298,7 +298,7 @@ export default function Home() {
                 <Filter className="w-5 h-5" />
               </button>
               
-              <button className="p-2 hover:bg-zinc-900 text-gray-400 hover:text-green-400 rounded-full relative transition-colors">
+              <button onClick={() => router.push('/favoritos')} className="p-2 hover:bg-zinc-900 text-gray-400 hover:text-green-400 rounded-full relative transition-colors">
                 <Heart className="w-5 h-5" />
                 {wishlistCount > 0 && (
                   <Badge className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-xs bg-gradient-to-r from-green-400 to-cyan-400 text-black">
