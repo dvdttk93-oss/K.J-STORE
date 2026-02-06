@@ -284,6 +284,30 @@ export default function AdminPage() {
     }
   };
 
+  const handleDeleteCategory = async (categoryId) => {
+    if (!confirm('Tem certeza que deseja excluir esta categoria? Produtos nesta categoria não serão excluídos.')) return;
+
+    const token = localStorage.getItem('token');
+
+    try {
+      const response = await fetch(`/api/admin/categories/${categoryId}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+
+      if (response.ok) {
+        alert('✓ Categoria excluída com sucesso!');
+        loadData();
+      } else {
+        const data = await response.json();
+        alert(data.error || 'Erro ao excluir categoria');
+      }
+    } catch (error) {
+      console.error('Erro ao excluir categoria:', error);
+      alert('Erro ao processar solicitação');
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
