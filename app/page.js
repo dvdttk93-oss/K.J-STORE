@@ -773,23 +773,23 @@ export default function Home() {
 
       {/* Product Detail Modal */}
       {selectedProduct && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 overflow-y-auto">
-          <div className="bg-white rounded-lg p-8 max-w-4xl w-full my-8">
+        <div className="fixed inset-0 bg-black/95 backdrop-blur-sm flex items-center justify-center z-50 p-4 overflow-y-auto">
+          <div className="bg-zinc-900 rounded-lg p-6 md:p-8 max-w-4xl w-full my-8 border-2 border-zinc-800">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold">Detalhes do Produto</h2>
+              <h2 className="text-xl md:text-2xl font-black text-white">Detalhes do Produto</h2>
               <button
                 onClick={() => {
                   setSelectedProduct(null);
                   setSelectedSize('');
                   setSelectedColor('');
                 }}
-                className="p-2 hover:bg-gray-100 rounded-full"
+                className="p-3 bg-red-500 hover:bg-red-600 rounded-full transition-all flex-shrink-0"
               >
-                <X className="w-5 h-5" />
+                <X className="w-6 h-6 text-white" />
               </button>
             </div>
             
-            <div className="grid md:grid-cols-2 gap-8">
+            <div className="grid md:grid-cols-2 gap-6 md:gap-8">
               <div>
                 <img
                   src={selectedProduct.images[0]}
@@ -799,17 +799,17 @@ export default function Home() {
               </div>
               
               <div>
-                <h3 className="text-3xl font-bold mb-4">{selectedProduct.name}</h3>
-                <p className="text-gray-600 mb-4">{selectedProduct.description}</p>
+                <h3 className="text-2xl md:text-3xl font-black text-white mb-4">{selectedProduct.name}</h3>
+                <p className="text-gray-400 mb-4">{selectedProduct.description}</p>
                 
                 <div className="flex items-center mb-4">
                   <Star className="w-5 h-5 fill-yellow-400 text-yellow-400" />
-                  <span className="ml-1 font-semibold">{selectedProduct.rating}</span>
-                  <span className="text-gray-500 ml-1">({selectedProduct.reviews} avaliações)</span>
+                  <span className="ml-1 font-semibold text-white">{selectedProduct.rating}</span>
+                  <span className="text-gray-400 ml-1">({selectedProduct.reviews} avaliações)</span>
                 </div>
                 
                 <div className="mb-6">
-                  <div className="text-3xl font-bold mb-2">R$ {selectedProduct.price.toFixed(2)}</div>
+                  <div className="text-3xl font-black text-white mb-2">R$ {selectedProduct.price.toFixed(2)}</div>
                   {selectedProduct.originalPrice > selectedProduct.price && (
                     <div className="flex items-center space-x-2">
                       <div className="text-lg text-gray-500 line-through">R$ {selectedProduct.originalPrice.toFixed(2)}</div>
@@ -821,14 +821,14 @@ export default function Home() {
                 </div>
                 
                 <div className="mb-6">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Tamanho</label>
+                  <label className="block text-sm font-bold text-gray-300 mb-3 uppercase tracking-wide">Tamanho</label>
                   <div className="flex flex-wrap gap-2">
                     {selectedProduct.sizes.map(size => (
                       <button
                         key={size}
                         onClick={() => setSelectedSize(size)}
-                        className={`px-4 py-2 border rounded-lg hover:border-gray-900 transition-colors ${
-                          selectedSize === size ? 'border-gray-900 bg-gray-900 text-white' : 'border-gray-300'
+                        className={`px-4 py-3 border rounded-lg hover:border-green-400 transition-colors font-bold ${
+                          selectedSize === size ? 'border-green-400 bg-green-400 text-black' : 'border-zinc-700 text-gray-400'
                         }`}
                       >
                         {size}
@@ -838,14 +838,14 @@ export default function Home() {
                 </div>
                 
                 <div className="mb-6">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Cor</label>
+                  <label className="block text-sm font-bold text-gray-300 mb-3 uppercase tracking-wide">Cor</label>
                   <div className="flex flex-wrap gap-2">
                     {selectedProduct.colors.map(color => (
                       <button
                         key={color}
                         onClick={() => setSelectedColor(color)}
-                        className={`px-4 py-2 border rounded-lg hover:border-gray-900 transition-colors ${
-                          selectedColor === color ? 'border-gray-900 bg-gray-900 text-white' : 'border-gray-300'
+                        className={`px-4 py-3 border rounded-lg hover:border-green-400 transition-colors font-bold ${
+                          selectedColor === color ? 'border-green-400 bg-green-400 text-black' : 'border-zinc-700 text-gray-400'
                         }`}
                       >
                         {color}
@@ -855,14 +855,14 @@ export default function Home() {
                 </div>
                 
                 <div className="mb-6">
-                  <p className="text-sm text-gray-600">
-                    <span className="font-semibold">Estoque:</span> {selectedProduct.stock} unidades disponíveis
+                  <p className="text-sm text-gray-400">
+                    <span className="font-semibold text-white">Estoque:</span> {selectedProduct.stock} unidades disponíveis
                   </p>
                 </div>
                 
-                <div className="flex space-x-4">
+                <div className="flex flex-col space-y-3">
                   <Button
-                    className="flex-1"
+                    className="w-full bg-gradient-to-r from-green-400 to-cyan-400 text-black font-bold hover:shadow-lg"
                     size="lg"
                     onClick={() => addToCart(selectedProduct._id)}
                   >
@@ -871,9 +871,14 @@ export default function Home() {
                   <Button
                     variant="outline"
                     size="lg"
-                    onClick={() => addToWishlist(selectedProduct._id)}
+                    onClick={() => {
+                      setSelectedProduct(null);
+                      setSelectedSize('');
+                      setSelectedColor('');
+                    }}
+                    className="w-full border-zinc-700 text-gray-400 hover:bg-zinc-800"
                   >
-                    <Heart className="w-5 h-5" />
+                    Voltar
                   </Button>
                 </div>
               </div>
