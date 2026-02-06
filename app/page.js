@@ -251,30 +251,56 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
-            <div className="flex items-center space-x-8">
+            <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-3">
                 <img src="/logo.jpeg" alt="K.J STORE" className="h-10 w-10 object-contain rounded" />
                 <h1 className="text-2xl font-black text-white tracking-tighter">K.J STORE</h1>
               </div>
               
-              {/* Desktop Navigation */}
-              <nav className="hidden md:flex space-x-6">
+              {/* Desktop Navigation - Scrollable */}
+              <div className="hidden md:flex items-center space-x-2">
                 <button
-                  onClick={() => setSelectedCategory(null)}
-                  className={`text-sm font-bold uppercase tracking-wide hover:text-green-400 transition-colors ${!selectedCategory ? 'text-green-400' : 'text-gray-400'}`}
+                  onClick={() => {
+                    const container = document.getElementById('categories-scroll');
+                    if (container) container.scrollLeft -= 200;
+                  }}
+                  className="p-2 hover:bg-zinc-800 rounded-full text-gray-400 hover:text-green-400"
                 >
-                  Todos
+                  ←
                 </button>
-                {categories.slice(0, 5).map(category => (
+                
+                <div 
+                  id="categories-scroll"
+                  className="flex space-x-6 overflow-x-auto scrollbar-hide scroll-smooth"
+                  style={{ maxWidth: '600px', scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                >
                   <button
-                    key={category._id}
-                    onClick={() => setSelectedCategory(category.slug)}
-                    className={`text-sm font-bold uppercase tracking-wide hover:text-green-400 transition-colors ${selectedCategory === category.slug ? 'text-green-400' : 'text-gray-400'}`}
+                    onClick={() => setSelectedCategory(null)}
+                    className={`text-sm font-bold uppercase tracking-wide hover:text-green-400 transition-colors whitespace-nowrap ${!selectedCategory ? 'text-green-400' : 'text-gray-400'}`}
                   >
-                    {category.name}
+                    Todos
                   </button>
-                ))}
-              </nav>
+                  {categories.map(category => (
+                    <button
+                      key={category._id}
+                      onClick={() => setSelectedCategory(category.slug)}
+                      className={`text-sm font-bold uppercase tracking-wide hover:text-green-400 transition-colors whitespace-nowrap ${selectedCategory === category.slug ? 'text-green-400' : 'text-gray-400'}`}
+                    >
+                      {category.name}
+                    </button>
+                  ))}
+                </div>
+                
+                <button
+                  onClick={() => {
+                    const container = document.getElementById('categories-scroll');
+                    if (container) container.scrollLeft += 200;
+                  }}
+                  className="p-2 hover:bg-zinc-800 rounded-full text-gray-400 hover:text-green-400"
+                >
+                  →
+                </button>
+              </div>
             </div>
             
             {/* Right Actions */}
