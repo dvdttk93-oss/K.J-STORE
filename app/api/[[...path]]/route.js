@@ -981,7 +981,18 @@ export async function DELETE(request) {
       
       const id = path.split('/')[2];
       
-      await db.collection('categories').deleteOne({ _id: new ObjectId(id) });
+      // Tentar deletar por ObjectId ou por _id string
+      let result;
+      try {
+        result = await db.collection('categories').deleteOne({ _id: new ObjectId(id) });
+      } catch (e) {
+        // Se falhar como ObjectId, tentar como string
+        result = await db.collection('categories').deleteOne({ _id: id });
+      }
+      
+      if (result.deletedCount === 0) {
+        return NextResponse.json({ error: 'Categoria não encontrada' }, { status: 404 });
+      }
       
       return NextResponse.json({ message: 'Categoria removida com sucesso' });
     }
