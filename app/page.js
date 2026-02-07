@@ -158,7 +158,7 @@ export default function Home() {
     setUser(null);
     setCartCount(0);
     setWishlistCount(0);
-    alert('Logout realizado com sucesso!');
+    toast.success('Logout realizado com sucesso!');
   };
 
   const addToCart = async (productId) => {
