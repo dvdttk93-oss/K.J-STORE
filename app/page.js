@@ -213,7 +213,7 @@ export default function Home() {
 
   const addToWishlist = async (productId) => {
     if (!user) {
-      alert('Faça login para adicionar aos favoritos');
+      toast.error('Faça login para adicionar aos favoritos');
       setShowAuthModal(true);
       return;
     }
@@ -231,15 +231,15 @@ export default function Home() {
       });
       
       if (response.ok) {
-        alert('Produto adicionado aos favoritos!');
+        toast.wishlist('Produto adicionado');
         loadWishlistCount();
       } else {
         const data = await response.json();
-        alert(data.error || 'Erro ao adicionar aos favoritos');
+        toast.info(data.error || 'Produto já está nos favoritos');
       }
     } catch (error) {
       console.error('Erro ao adicionar aos favoritos:', error);
-      alert('Erro ao processar solicitação');
+      toast.error('Erro ao processar solicitação');
     }
   };
 
