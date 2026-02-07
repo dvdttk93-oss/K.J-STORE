@@ -169,27 +169,27 @@ export default function AdminPage() {
 
     // Validações adicionais
     if (!productData.name || productData.name.length < 3) {
-      alert('Nome do produto deve ter pelo menos 3 caracteres');
+      toast.error('Nome do produto deve ter pelo menos 3 caracteres');
       return;
     }
     
     if (!productData.description || productData.description.length < 10) {
-      alert('Descrição deve ter pelo menos 10 caracteres');
+      toast.error('Descrição deve ter pelo menos 10 caracteres');
       return;
     }
     
     if (productData.images.length === 0) {
-      alert('Adicione pelo menos uma imagem');
+      toast.error('Adicione pelo menos uma imagem');
       return;
     }
     
     if (productData.sizes.length === 0) {
-      alert('Adicione pelo menos um tamanho');
+      toast.error('Adicione pelo menos um tamanho');
       return;
     }
     
     if (productData.colors.length === 0) {
-      alert('Adicione pelo menos uma cor');
+      toast.error('Adicione pelo menos uma cor');
       return;
     }
 
