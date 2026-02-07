@@ -54,7 +54,7 @@ export default function AdminPage() {
         if (data.user.role === 'admin') {
           setUser(data.user);
         } else {
-          alert('Acesso negado. Apenas administradores.');
+          toast.error('Acesso negado. Apenas administradores.');
           router.push('/');
         }
       } else {
