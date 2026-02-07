@@ -429,6 +429,42 @@ backend:
         agent: "testing"
         comment: "POST /api/admin/categories working correctly. Category created successfully with proper admin authentication."
 
+  - task: "Admin Delete Category"
+    implemented: true
+    working: true
+    file: "app/api/[[...path]]/route.js"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "DELETE /api/admin/categories/{id} working correctly. Successfully deleted 'Tênis Masculino' category and verified removal from database. Supports both ObjectId and string ID formats."
+
+  - task: "Products Multiple Images Support"
+    implemented: true
+    working: true
+    file: "app/api/[[...path]]/route.js"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "testing"
+        comment: "POST /api/admin/products with multiple images working correctly. Successfully created product with 3 images array and verified all images were saved properly."
+
+  - task: "Shipping Calculation"
+    implemented: true
+    working: false
+    file: "app/api/[[...path]]/route.js"
+    stuck_count: 1
+    priority: "low"
+    needs_retesting: false
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "Minor: POST /api/shipping/calculate endpoint exists and responds but returns same cost (0) for different CEPs (01310100 São Paulo and 40000100 Salvador). Fallback distance calculation logic needs improvement to differentiate between locations."
+
 frontend:
   - task: "Frontend UI Components"
     implemented: true
