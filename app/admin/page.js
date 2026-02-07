@@ -297,15 +297,15 @@ export default function AdminPage() {
       });
 
       if (response.ok) {
-        alert('✓ Categoria excluída com sucesso!');
+        toast.success('Categoria excluída com sucesso!');
         loadData();
       } else {
         const data = await response.json();
-        alert(data.error || 'Erro ao excluir categoria');
+        toast.error(data.error || 'Erro ao excluir categoria');
       }
     } catch (error) {
       console.error('Erro ao excluir categoria:', error);
-      alert('Erro ao processar solicitação');
+      toast.error('Erro ao processar solicitação');
     }
   };
 
