@@ -123,14 +123,14 @@ export default function AdminPage() {
       });
 
       if (response.ok) {
-        alert('Produto excluído com sucesso!');
+        toast.success('Produto excluído com sucesso!');
         loadData();
       } else {
-        alert('Erro ao excluir produto');
+        toast.error('Erro ao excluir produto');
       }
     } catch (error) {
       console.error('Erro ao excluir produto:', error);
-      alert('Erro ao processar solicitação');
+      toast.error('Erro ao processar solicitação');
     }
   };
 
