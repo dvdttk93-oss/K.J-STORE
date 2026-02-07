@@ -244,15 +244,33 @@ export default function CheckoutPage() {
   };
 
   const notifyAdminNewOrder = (orderData) => {
-    // Prepara mensagem para o admin
+    // Gera lista de produtos comprados
+    const productsList = cart.map(item => 
+      `• ${item.product.name} (${item.size}/${item.color}) x${item.quantity} = R$${(item.product.price * item.quantity).toFixed(2)}`
+    ).join('\n');
+    
+    // Prepara mensagem completa para o admin
     const message = encodeURIComponent(
-      `🔔 *NOVO PEDIDO - K.J STORE*\n\n` +
-      `📦 Pedido: #${orderData.orderId?.toString().slice(-8)}\n` +
-      `👤 Cliente: ${shippingAddress.name}\n` +
-      `📱 Tel: ${shippingAddress.phone}\n` +
-      `💰 Valor: R$ ${orderData.total.toFixed(2)}\n` +
-      `📍 Cidade: ${shippingAddress.city}/${shippingAddress.state}\n\n` +
-      `Acesse o painel admin para mais detalhes!`
+      `🛒 *NOVO PEDIDO - K.J STORE*\n` +
+      `━━━━━━━━━━━━━━━━━━━━━━\n\n` +
+      `📦 *Pedido:* #${orderData.orderId?.toString().slice(-8)}\n\n` +
+      `👤 *CLIENTE:*\n` +
+      `Nome: ${shippingAddress.name}\n` +
+      `Tel: ${shippingAddress.phone}\n\n` +
+      `🛍️ *PRODUTOS:*\n${productsList}\n\n` +
+      `💰 *VALORES:*\n` +
+      `Subtotal: R$ ${calculateTotal().toFixed(2)}\n` +
+      `Frete (${selectedShipping?.service}): R$ ${selectedShipping?.price.toFixed(2)}\n` +
+      `*TOTAL: R$ ${orderData.total.toFixed(2)}*\n\n` +
+      `📍 *ENDEREÇO DE ENTREGA:*\n` +
+      `${shippingAddress.street}, ${shippingAddress.number}\n` +
+      `${shippingAddress.complement ? shippingAddress.complement + '\n' : ''}` +
+      `${shippingAddress.neighborhood}\n` +
+      `${shippingAddress.city}/${shippingAddress.state}\n` +
+      `CEP: ${shippingAddress.zipCode}\n\n` +
+      `⏰ *Previsão de entrega:* ${selectedShipping?.deliveryTime} dias úteis\n\n` +
+      `━━━━━━━━━━━━━━━━━━━━━━\n` +
+      `_Enviado automaticamente pela K.J STORE_`
     );
     
     // Abre WhatsApp do admin em nova aba
