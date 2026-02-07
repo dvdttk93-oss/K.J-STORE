@@ -11,6 +11,7 @@ import { toast } from '@/hooks/use-toast';
 
 export default function Home() {
   const router = useRouter();
+  const categoriesRef = useRef(null);
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -26,6 +27,37 @@ export default function Home() {
   const [selectedColor, setSelectedColor] = useState('');
   const [showFilters, setShowFilters] = useState(false);
   const [priceRange, setPriceRange] = useState({ min: '', max: '' });
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+
+  // Category carousel scroll handlers
+  const scrollCategories = (direction) => {
+    const container = categoriesRef.current;
+    if (container) {
+      const scrollAmount = 300;
+      container.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  const checkScrollButtons = () => {
+    const container = categoriesRef.current;
+    if (container) {
+      setCanScrollLeft(container.scrollLeft > 0);
+      setCanScrollRight(container.scrollLeft < container.scrollWidth - container.clientWidth - 10);
+    }
+  };
+
+  useEffect(() => {
+    const container = categoriesRef.current;
+    if (container) {
+      container.addEventListener('scroll', checkScrollButtons);
+      checkScrollButtons();
+      return () => container.removeEventListener('scroll', checkScrollButtons);
+    }
+  }, [categories]);
 
   useEffect(() => {
     loadProducts();
