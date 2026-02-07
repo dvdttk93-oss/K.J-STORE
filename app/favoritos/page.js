@@ -199,19 +199,19 @@ export default function FavoritosPage() {
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                       />
                       {product.originalPrice > product.price && (
-                        <Badge className="absolute top-4 right-4 bg-gradient-to-r from-green-400 to-cyan-400 text-black font-bold">
+                        <Badge className="absolute top-4 right-4 bg-gradient-to-r from-green-400 to-cyan-400 text-black font-bold z-20">
                           -{Math.round((1 - product.price / product.originalPrice) * 100)}%
                         </Badge>
                       )}
                       
                       <button
                         onClick={() => removeFromWishlist(item._id)}
-                        className="absolute top-4 left-4 p-3 bg-red-500 hover:bg-red-600 backdrop-blur-sm rounded-full transition-all"
+                        className="absolute top-4 left-4 p-3 bg-red-500 hover:bg-red-600 backdrop-blur-sm rounded-full transition-all z-20"
                       >
                         <Trash2 className="w-4 h-4 text-white" />
                       </button>
 
-                      <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60"></div>
+                      <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60 z-10 pointer-events-none"></div>
                     </div>
 
                     <div className="p-4 bg-zinc-900">
