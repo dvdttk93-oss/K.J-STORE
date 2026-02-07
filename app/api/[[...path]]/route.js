@@ -930,10 +930,24 @@ export async function DELETE(request) {
       
       const id = path.split('/')[1];
       
-      await db.collection('wishlist').deleteOne({
-        _id: new ObjectId(id),
-        userEmail: decoded.email
-      });
+      // Tentar deletar por _id (ObjectId) ou por productId
+      let result;
+      try {
+        result = await db.collection('wishlist').deleteOne({
+          _id: new ObjectId(id),
+          userEmail: decoded.email
+        });
+      } catch (e) {
+        // Se falhar como ObjectId, tentar por productId
+        result = await db.collection('wishlist').deleteOne({
+          productId: id,
+          userEmail: decoded.email
+        });
+      }
+      
+      if (result.deletedCount === 0) {
+        return NextResponse.json({ error: 'Item não encontrado nos favoritos' }, { status: 404 });
+      }
       
       return NextResponse.json({ message: 'Item removido dos favoritos' });
     }
