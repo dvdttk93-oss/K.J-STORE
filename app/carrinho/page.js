@@ -6,6 +6,7 @@ import { ShoppingCart, Trash2, Plus, Minus, ArrowRight, ArrowLeft } from 'lucide
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import { toast } from '@/hooks/use-toast';
 
 export default function CarrinhoPage() {
   const router = useRouter();
