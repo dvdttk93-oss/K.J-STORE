@@ -163,18 +163,18 @@ export default function Home() {
 
   const addToCart = async (productId) => {
     if (!user) {
-      alert('Faça login para adicionar ao carrinho');
+      toast.error('Faça login para adicionar ao carrinho');
       setShowAuthModal(true);
       return;
     }
     
     if (!selectedSize) {
-      alert('Selecione um tamanho');
+      toast.error('Selecione um tamanho');
       return;
     }
     
     if (!selectedColor) {
-      alert('Selecione uma cor');
+      toast.error('Selecione uma cor');
       return;
     }
     
@@ -196,18 +196,18 @@ export default function Home() {
       });
       
       if (response.ok) {
-        alert('Produto adicionado ao carrinho!');
+        toast.cart(selectedProduct?.name || 'Produto');
         loadCartCount();
         setSelectedProduct(null);
         setSelectedSize('');
         setSelectedColor('');
       } else {
         const data = await response.json();
-        alert(data.error || 'Erro ao adicionar ao carrinho');
+        toast.error(data.error || 'Erro ao adicionar ao carrinho');
       }
     } catch (error) {
       console.error('Erro ao adicionar ao carrinho:', error);
-      alert('Erro ao processar solicitação');
+      toast.error('Erro ao processar solicitação');
     }
   };
 
