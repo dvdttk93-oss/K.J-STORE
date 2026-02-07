@@ -1,9 +1,9 @@
 "use client";
-// Inspired by react-hot-toast library
+// Custom toast hook for K.J STORE
 import * as React from "react"
 
-const TOAST_LIMIT = 1
-const TOAST_REMOVE_DELAY = 1000000
+const TOAST_LIMIT = 3
+const TOAST_REMOVE_DELAY = 4000 // 4 segundos
 
 const actionTypes = {
   ADD_TOAST: "ADD_TOAST",
@@ -55,8 +55,6 @@ export const reducer = (state, action) => {
     case "DISMISS_TOAST": {
       const { toastId } = action
 
-      // ! Side effects ! - This could be extracted into a dismissToast() action,
-      // but I'll keep it here for simplicity
       if (toastId) {
         addToRemoveQueue(toastId)
       } else {
@@ -125,11 +123,57 @@ function toast({
     },
   })
 
+  // Auto dismiss after delay
+  setTimeout(() => {
+    dismiss()
+  }, TOAST_REMOVE_DELAY)
+
   return {
     id: id,
     dismiss,
     update,
   }
+}
+
+// Helper functions for different toast types
+toast.success = (message) => {
+  return toast({
+    title: "✓ Sucesso",
+    description: message,
+    variant: "success",
+  })
+}
+
+toast.error = (message) => {
+  return toast({
+    title: "✕ Erro",
+    description: message,
+    variant: "destructive",
+  })
+}
+
+toast.info = (message) => {
+  return toast({
+    title: "ℹ Info",
+    description: message,
+    variant: "default",
+  })
+}
+
+toast.cart = (productName) => {
+  return toast({
+    title: "🛒 Adicionado ao Carrinho",
+    description: productName,
+    variant: "success",
+  })
+}
+
+toast.wishlist = (productName) => {
+  return toast({
+    title: "❤️ Adicionado aos Favoritos",
+    description: productName,
+    variant: "success",
+  })
 }
 
 function useToast() {
