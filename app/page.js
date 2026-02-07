@@ -290,26 +290,32 @@ export default function Home() {
                 <h1 className="text-2xl font-black text-white tracking-tighter">K.J STORE</h1>
               </div>
               
-              {/* Desktop Navigation - Scrollable */}
+              {/* Desktop Navigation - Scrollable Categories Carousel */}
               <div className="hidden md:flex items-center space-x-2">
                 <button
-                  onClick={() => {
-                    const container = document.getElementById('categories-scroll');
-                    if (container) container.scrollLeft -= 200;
-                  }}
-                  className="p-2 hover:bg-zinc-800 rounded-full text-gray-400 hover:text-green-400"
+                  onClick={() => scrollCategories('left')}
+                  disabled={!canScrollLeft}
+                  className={`p-2 rounded-full transition-all ${
+                    canScrollLeft 
+                      ? 'hover:bg-zinc-800 text-gray-400 hover:text-green-400' 
+                      : 'text-zinc-800 cursor-not-allowed'
+                  }`}
                 >
-                  ←
+                  <ChevronLeft className="w-5 h-5" />
                 </button>
                 
                 <div 
-                  id="categories-scroll"
-                  className="flex space-x-6 overflow-x-auto scrollbar-hide scroll-smooth"
-                  style={{ maxWidth: '600px', scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                  ref={categoriesRef}
+                  className="flex space-x-1 overflow-x-auto scrollbar-hide scroll-smooth"
+                  style={{ maxWidth: '500px', scrollbarWidth: 'none', msOverflowStyle: 'none' }}
                 >
                   <button
                     onClick={() => setSelectedCategory(null)}
-                    className={`text-sm font-bold uppercase tracking-wide hover:text-green-400 transition-colors whitespace-nowrap ${!selectedCategory ? 'text-green-400' : 'text-gray-400'}`}
+                    className={`px-4 py-2 rounded-full text-sm font-bold uppercase tracking-wide transition-all whitespace-nowrap ${
+                      !selectedCategory 
+                        ? 'bg-gradient-to-r from-green-400 to-cyan-400 text-black' 
+                        : 'text-gray-400 hover:text-white hover:bg-zinc-800'
+                    }`}
                   >
                     Todos
                   </button>
@@ -317,7 +323,11 @@ export default function Home() {
                     <button
                       key={category._id}
                       onClick={() => setSelectedCategory(category.slug)}
-                      className={`text-sm font-bold uppercase tracking-wide hover:text-green-400 transition-colors whitespace-nowrap ${selectedCategory === category.slug ? 'text-green-400' : 'text-gray-400'}`}
+                      className={`px-4 py-2 rounded-full text-sm font-bold uppercase tracking-wide transition-all whitespace-nowrap ${
+                        selectedCategory === category.slug 
+                          ? 'bg-gradient-to-r from-green-400 to-cyan-400 text-black' 
+                          : 'text-gray-400 hover:text-white hover:bg-zinc-800'
+                      }`}
                     >
                       {category.name}
                     </button>
@@ -325,13 +335,15 @@ export default function Home() {
                 </div>
                 
                 <button
-                  onClick={() => {
-                    const container = document.getElementById('categories-scroll');
-                    if (container) container.scrollLeft += 200;
-                  }}
-                  className="p-2 hover:bg-zinc-800 rounded-full text-gray-400 hover:text-green-400"
+                  onClick={() => scrollCategories('right')}
+                  disabled={!canScrollRight}
+                  className={`p-2 rounded-full transition-all ${
+                    canScrollRight 
+                      ? 'hover:bg-zinc-800 text-gray-400 hover:text-green-400' 
+                      : 'text-zinc-800 cursor-not-allowed'
+                  }`}
                 >
-                  →
+                  <ChevronRight className="w-5 h-5" />
                 </button>
               </div>
             </div>
