@@ -199,7 +199,7 @@ export default function CheckoutPage() {
       calculateShipping(cep);
     } catch (error) {
       console.error('Erro ao buscar CEP:', error);
-      alert('Erro ao buscar CEP. Tente novamente.');
+      toast.error('Erro ao buscar CEP. Tente novamente.');
       setSearchingCEP(false);
     }
   };
