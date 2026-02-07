@@ -279,7 +279,7 @@ export default function CheckoutPage() {
 
   const createOrder = async () => {
     if (!selectedShipping) {
-      alert('Por favor, selecione uma opção de frete antes de continuar.');
+      toast.error('Por favor, selecione uma opção de frete antes de continuar.');
       return;
     }
 
@@ -322,6 +322,7 @@ export default function CheckoutPage() {
         setOrderId(data.orderId);
         setOrderCreated(true);
         setStep(3);
+        toast.success('Pedido realizado com sucesso!');
         
         // Notificar admin sobre novo pedido
         setTimeout(() => {
@@ -331,11 +332,11 @@ export default function CheckoutPage() {
           });
         }, 1000);
       } else {
-        alert('Erro ao criar pedido. Tente novamente.');
+        toast.error('Erro ao criar pedido. Tente novamente.');
       }
     } catch (error) {
       console.error('Erro ao criar pedido:', error);
-      alert('Erro ao processar pedido');
+      toast.error('Erro ao processar pedido');
     }
   };
 
