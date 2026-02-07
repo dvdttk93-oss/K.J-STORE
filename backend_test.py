@@ -1,742 +1,513 @@
 #!/usr/bin/env python3
 """
-E-commerce Sport Store Backend API Test Suite
-Tests all backend endpoints and functionality
+K.J STORE Backend API Tests
+Testing specific endpoints as requested:
+1. Authentication with admin@ecommerce.com/admin123
+2. Category deletion tests
+3. Multiple images in products
+4. Wishlist functionality
+5. Shipping calculation
 """
 
 import requests
 import json
 import sys
-import os
 from datetime import datetime
 
-# Get base URL from environment
-BASE_URL = "https://kjstore-shop.preview.emergentagent.com/api"
+# Base URL from environment
+BASE_URL = "https://kjstore-shop.preview.emergentagent.com"
+API_BASE = f"{BASE_URL}/api"
 
-class EcommerceAPITester:
+class KJStoreAPITester:
     def __init__(self):
-        self.base_url = BASE_URL
-        self.session = requests.Session()
-        self.user_token = None
         self.admin_token = None
-        self.test_user_email = "testuser@example.com"
-        self.test_user_password = "testpass123"
-        self.admin_email = "admin@ecommerce.com"
-        self.admin_password = "admin123"
-        self.created_product_id = None
-        self.created_category_id = None
+        self.user_token = None
         self.test_results = []
         
-    def log_result(self, test_name, success, message="", response_data=None):
+    def log_result(self, test_name, success, message, details=None):
         """Log test result"""
+        result = {
+            'test': test_name,
+            'success': success,
+            'message': message,
+            'details': details,
+            'timestamp': datetime.now().isoformat()
+        }
+        self.test_results.append(result)
         status = "✅ PASS" if success else "❌ FAIL"
-        print(f"{status} {test_name}: {message}")
+        print(f"{status} - {test_name}: {message}")
+        if details:
+            print(f"   Details: {details}")
+    
+    def test_admin_authentication(self):
+        """Test 1: Admin Authentication"""
+        print("\n=== Test 1: Admin Authentication ===")
         
-        self.test_results.append({
-            "test": test_name,
-            "success": success,
-            "message": message,
-            "response_data": response_data
-        })
-        
-    def make_request(self, method, endpoint, data=None, headers=None, token=None):
-        """Make HTTP request with proper error handling"""
-        url = f"{self.base_url}/{endpoint}"
-        
-        if headers is None:
-            headers = {"Content-Type": "application/json"}
+        try:
+            # Test admin login
+            login_data = {
+                "email": "admin@ecommerce.com",
+                "password": "admin123"
+            }
             
-        if token:
-            headers["Authorization"] = f"Bearer {token}"
+            response = requests.post(f"{API_BASE}/auth/login", json=login_data)
+            
+            if response.status_code == 200:
+                data = response.json()
+                if 'token' in data and 'user' in data:
+                    self.admin_token = data['token']
+                    user_role = data['user'].get('role', '')
+                    
+                    if user_role == 'admin':
+                        self.log_result(
+                            "Admin Login", 
+                            True, 
+                            "Admin authentication successful",
+                            f"Token received, role: {user_role}"
+                        )
+                        return True
+                    else:
+                        self.log_result(
+                            "Admin Login", 
+                            False, 
+                            "User authenticated but not admin role",
+                            f"Role: {user_role}"
+                        )
+                else:
+                    self.log_result(
+                        "Admin Login", 
+                        False, 
+                        "Missing token or user data in response",
+                        str(data)
+                    )
+            else:
+                self.log_result(
+                    "Admin Login", 
+                    False, 
+                    f"Login failed with status {response.status_code}",
+                    response.text
+                )
+                
+        except Exception as e:
+            self.log_result("Admin Login", False, "Exception occurred", str(e))
+            
+        return False
+    
+    def test_category_deletion(self):
+        """Test 2: Category Deletion"""
+        print("\n=== Test 2: Category Deletion ===")
+        
+        if not self.admin_token:
+            self.log_result("Category Deletion", False, "No admin token available", "Admin authentication required")
+            return False
             
         try:
-            if method.upper() == "GET":
-                response = self.session.get(url, headers=headers)
-            elif method.upper() == "POST":
-                response = self.session.post(url, json=data, headers=headers)
-            elif method.upper() == "PUT":
-                response = self.session.put(url, json=data, headers=headers)
-            elif method.upper() == "DELETE":
-                response = self.session.delete(url, headers=headers)
-            else:
-                raise ValueError(f"Unsupported method: {method}")
+            headers = {"Authorization": f"Bearer {self.admin_token}"}
+            
+            # First, get existing categories
+            response = requests.get(f"{API_BASE}/categories")
+            if response.status_code != 200:
+                self.log_result("Get Categories", False, "Failed to fetch categories", response.text)
+                return False
                 
-            return response
+            categories = response.json().get('categories', [])
+            if not categories:
+                self.log_result("Get Categories", False, "No categories found", "Cannot test deletion")
+                return False
+                
+            self.log_result("Get Categories", True, f"Found {len(categories)} categories", None)
             
-        except requests.exceptions.RequestException as e:
-            print(f"Request error: {e}")
-            return None
-    
-    def test_auth_register(self):
-        """Test user registration"""
-        print("\n=== Testing User Registration ===")
-        
-        data = {
-            "name": "Test User",
-            "email": self.test_user_email,
-            "password": self.test_user_password
-        }
-        
-        response = self.make_request("POST", "auth/register", data)
-        
-        if response and response.status_code == 200:
-            response_data = response.json()
-            if "token" in response_data:
-                self.user_token = response_data["token"]
-                self.log_result("User Registration", True, "User registered successfully", response_data)
-                return True
-            else:
-                self.log_result("User Registration", False, "No token in response", response_data)
-                return False
-        else:
-            error_msg = response.json().get("error", "Unknown error") if response else "No response"
-            self.log_result("User Registration", False, f"Registration failed: {error_msg}")
-            return False
-    
-    def test_auth_login(self):
-        """Test user login"""
-        print("\n=== Testing User Login ===")
-        
-        data = {
-            "email": self.test_user_email,
-            "password": self.test_user_password
-        }
-        
-        response = self.make_request("POST", "auth/login", data)
-        
-        if response and response.status_code == 200:
-            response_data = response.json()
-            if "token" in response_data:
-                self.user_token = response_data["token"]
-                self.log_result("User Login", True, "Login successful", response_data)
-                return True
-            else:
-                self.log_result("User Login", False, "No token in response", response_data)
-                return False
-        else:
-            error_msg = response.json().get("error", "Unknown error") if response else "No response"
-            self.log_result("User Login", False, f"Login failed: {error_msg}")
-            return False
-    
-    def test_auth_me(self):
-        """Test get current user"""
-        print("\n=== Testing Get Current User ===")
-        
-        if not self.user_token:
-            self.log_result("Get Current User", False, "No user token available")
-            return False
+            # Try to delete the first category
+            category_to_delete = categories[0]
+            category_id = category_to_delete.get('_id')
+            category_name = category_to_delete.get('name', 'Unknown')
             
-        response = self.make_request("GET", "auth/me", token=self.user_token)
-        
-        if response and response.status_code == 200:
-            response_data = response.json()
-            if "user" in response_data:
-                self.log_result("Get Current User", True, "User data retrieved", response_data)
-                return True
-            else:
-                self.log_result("Get Current User", False, "No user data in response", response_data)
-                return False
-        else:
-            error_msg = response.json().get("error", "Unknown error") if response else "No response"
-            self.log_result("Get Current User", False, f"Failed to get user: {error_msg}")
-            return False
-    
-    def test_admin_login(self):
-        """Test admin login"""
-        print("\n=== Testing Admin Login ===")
-        
-        data = {
-            "email": self.admin_email,
-            "password": self.admin_password
-        }
-        
-        response = self.make_request("POST", "auth/login", data)
-        
-        if response and response.status_code == 200:
-            response_data = response.json()
-            if "token" in response_data:
-                self.admin_token = response_data["token"]
-                self.log_result("Admin Login", True, "Admin login successful", response_data)
-                return True
-            else:
-                self.log_result("Admin Login", False, "No token in response", response_data)
-                return False
-        else:
-            error_msg = response.json().get("error", "Unknown error") if response else "No response"
-            self.log_result("Admin Login", False, f"Admin login failed: {error_msg}")
-            return False
-    
-    def test_products_list(self):
-        """Test listing products"""
-        print("\n=== Testing Products List ===")
-        
-        response = self.make_request("GET", "products")
-        
-        if response and response.status_code == 200:
-            response_data = response.json()
-            if "products" in response_data and isinstance(response_data["products"], list):
-                products_count = len(response_data["products"])
-                self.log_result("Products List", True, f"Retrieved {products_count} products", {"count": products_count})
-                return True
-            else:
-                self.log_result("Products List", False, "Invalid products response", response_data)
-                return False
-        else:
-            error_msg = response.json().get("error", "Unknown error") if response else "No response"
-            self.log_result("Products List", False, f"Failed to get products: {error_msg}")
-            return False
-    
-    def test_products_filter_category(self):
-        """Test filtering products by category"""
-        print("\n=== Testing Products Filter by Category ===")
-        
-        response = self.make_request("GET", "products?category=tenis-masculino")
-        
-        if response and response.status_code == 200:
-            response_data = response.json()
-            if "products" in response_data:
-                filtered_count = len(response_data["products"])
-                self.log_result("Products Filter Category", True, f"Retrieved {filtered_count} products in category", {"count": filtered_count})
-                return True
-            else:
-                self.log_result("Products Filter Category", False, "Invalid filtered products response", response_data)
-                return False
-        else:
-            error_msg = response.json().get("error", "Unknown error") if response else "No response"
-            self.log_result("Products Filter Category", False, f"Failed to filter products: {error_msg}")
-            return False
-    
-    def test_products_filter_featured(self):
-        """Test filtering featured products"""
-        print("\n=== Testing Featured Products ===")
-        
-        response = self.make_request("GET", "products?featured=true")
-        
-        if response and response.status_code == 200:
-            response_data = response.json()
-            if "products" in response_data:
-                featured_count = len(response_data["products"])
-                self.log_result("Featured Products", True, f"Retrieved {featured_count} featured products", {"count": featured_count})
-                return True
-            else:
-                self.log_result("Featured Products", False, "Invalid featured products response", response_data)
-                return False
-        else:
-            error_msg = response.json().get("error", "Unknown error") if response else "No response"
-            self.log_result("Featured Products", False, f"Failed to get featured products: {error_msg}")
-            return False
-    
-    def test_products_filter_price(self):
-        """Test filtering products by price range"""
-        print("\n=== Testing Products Filter by Price ===")
-        
-        response = self.make_request("GET", "products?minPrice=100&maxPrice=500")
-        
-        if response and response.status_code == 200:
-            response_data = response.json()
-            if "products" in response_data:
-                price_filtered_count = len(response_data["products"])
-                self.log_result("Products Filter Price", True, f"Retrieved {price_filtered_count} products in price range", {"count": price_filtered_count})
-                return True
-            else:
-                self.log_result("Products Filter Price", False, "Invalid price filtered products response", response_data)
-                return False
-        else:
-            error_msg = response.json().get("error", "Unknown error") if response else "No response"
-            self.log_result("Products Filter Price", False, f"Failed to filter by price: {error_msg}")
-            return False
-    
-    def test_products_search(self):
-        """Test searching products"""
-        print("\n=== Testing Products Search ===")
-        
-        response = self.make_request("GET", "products?search=Air")
-        
-        if response and response.status_code == 200:
-            response_data = response.json()
-            if "products" in response_data:
-                search_count = len(response_data["products"])
-                self.log_result("Products Search", True, f"Found {search_count} products matching 'Air'", {"count": search_count})
-                return True
-            else:
-                self.log_result("Products Search", False, "Invalid search results", response_data)
-                return False
-        else:
-            error_msg = response.json().get("error", "Unknown error") if response else "No response"
-            self.log_result("Products Search", False, f"Search failed: {error_msg}")
-            return False
-    
-    def test_categories_list(self):
-        """Test listing categories"""
-        print("\n=== Testing Categories List ===")
-        
-        response = self.make_request("GET", "categories")
-        
-        if response and response.status_code == 200:
-            response_data = response.json()
-            if "categories" in response_data and isinstance(response_data["categories"], list):
-                categories_count = len(response_data["categories"])
-                self.log_result("Categories List", True, f"Retrieved {categories_count} categories", {"count": categories_count})
-                return True
-            else:
-                self.log_result("Categories List", False, "Invalid categories response", response_data)
-                return False
-        else:
-            error_msg = response.json().get("error", "Unknown error") if response else "No response"
-            self.log_result("Categories List", False, f"Failed to get categories: {error_msg}")
-            return False
-    
-    def test_cart_add_item(self):
-        """Test adding item to cart"""
-        print("\n=== Testing Add Item to Cart ===")
-        
-        if not self.user_token:
-            self.log_result("Add Item to Cart", False, "No user token available")
-            return False
-        
-        # First get a product ID
-        products_response = self.make_request("GET", "products")
-        if not products_response or products_response.status_code != 200:
-            self.log_result("Add Item to Cart", False, "Could not get products for cart test")
-            return False
+            print(f"   Attempting to delete category: {category_name} (ID: {category_id})")
             
-        products = products_response.json().get("products", [])
-        if not products:
-            self.log_result("Add Item to Cart", False, "No products available for cart test")
-            return False
+            # Delete category
+            delete_response = requests.delete(f"{API_BASE}/admin/categories/{category_id}", headers=headers)
             
-        product_id = str(products[0]["_id"])
-        
-        data = {
-            "productId": product_id,
-            "quantity": 2,
-            "size": "42",
-            "color": "Preto"
-        }
-        
-        response = self.make_request("POST", "cart", data, token=self.user_token)
-        
-        if response and response.status_code == 200:
-            response_data = response.json()
-            self.log_result("Add Item to Cart", True, "Item added to cart successfully", response_data)
-            return True
-        else:
-            error_msg = response.json().get("error", "Unknown error") if response else "No response"
-            self.log_result("Add Item to Cart", False, f"Failed to add to cart: {error_msg}")
-            return False
-    
-    def test_cart_get_items(self):
-        """Test getting cart items"""
-        print("\n=== Testing Get Cart Items ===")
-        
-        if not self.user_token:
-            self.log_result("Get Cart Items", False, "No user token available")
-            return False
-            
-        response = self.make_request("GET", "cart", token=self.user_token)
-        
-        if response and response.status_code == 200:
-            response_data = response.json()
-            if "cart" in response_data:
-                cart_count = len(response_data["cart"])
-                self.log_result("Get Cart Items", True, f"Retrieved {cart_count} cart items", {"count": cart_count})
-                return True
+            if delete_response.status_code == 200:
+                self.log_result(
+                    "Delete Category", 
+                    True, 
+                    f"Category '{category_name}' deleted successfully",
+                    f"ID: {category_id}"
+                )
+                
+                # Verify deletion by fetching categories again
+                verify_response = requests.get(f"{API_BASE}/categories")
+                if verify_response.status_code == 200:
+                    updated_categories = verify_response.json().get('categories', [])
+                    
+                    # Check if category was actually removed
+                    deleted_category_exists = any(cat.get('_id') == category_id for cat in updated_categories)
+                    
+                    if not deleted_category_exists:
+                        self.log_result(
+                            "Verify Deletion", 
+                            True, 
+                            "Category successfully removed from database",
+                            f"Categories count: {len(categories)} -> {len(updated_categories)}"
+                        )
+                        return True
+                    else:
+                        self.log_result(
+                            "Verify Deletion", 
+                            False, 
+                            "Category still exists after deletion",
+                            f"Category {category_id} found in updated list"
+                        )
+                else:
+                    self.log_result("Verify Deletion", False, "Failed to verify deletion", verify_response.text)
             else:
-                self.log_result("Get Cart Items", False, "Invalid cart response", response_data)
-                return False
-        else:
-            error_msg = response.json().get("error", "Unknown error") if response else "No response"
-            self.log_result("Get Cart Items", False, f"Failed to get cart: {error_msg}")
-            return False
-    
-    def test_wishlist_add_item(self):
-        """Test adding item to wishlist"""
-        print("\n=== Testing Add Item to Wishlist ===")
-        
-        if not self.user_token:
-            self.log_result("Add Item to Wishlist", False, "No user token available")
-            return False
-        
-        # Get a product ID
-        products_response = self.make_request("GET", "products")
-        if not products_response or products_response.status_code != 200:
-            self.log_result("Add Item to Wishlist", False, "Could not get products for wishlist test")
-            return False
+                self.log_result(
+                    "Delete Category", 
+                    False, 
+                    f"Failed to delete category with status {delete_response.status_code}",
+                    delete_response.text
+                )
+                
+        except Exception as e:
+            self.log_result("Category Deletion", False, "Exception occurred", str(e))
             
-        products = products_response.json().get("products", [])
-        if not products:
-            self.log_result("Add Item to Wishlist", False, "No products available for wishlist test")
-            return False
-            
-        product_id = str(products[1]["_id"])  # Use different product than cart
-        
-        data = {
-            "productId": product_id
-        }
-        
-        response = self.make_request("POST", "wishlist", data, token=self.user_token)
-        
-        if response and response.status_code == 200:
-            response_data = response.json()
-            self.log_result("Add Item to Wishlist", True, "Item added to wishlist successfully", response_data)
-            return True
-        else:
-            error_msg = response.json().get("error", "Unknown error") if response else "No response"
-            self.log_result("Add Item to Wishlist", False, f"Failed to add to wishlist: {error_msg}")
-            return False
+        return False
     
-    def test_wishlist_get_items(self):
-        """Test getting wishlist items"""
-        print("\n=== Testing Get Wishlist Items ===")
-        
-        if not self.user_token:
-            self.log_result("Get Wishlist Items", False, "No user token available")
-            return False
-            
-        response = self.make_request("GET", "wishlist", token=self.user_token)
-        
-        if response and response.status_code == 200:
-            response_data = response.json()
-            if "wishlist" in response_data:
-                wishlist_count = len(response_data["wishlist"])
-                self.log_result("Get Wishlist Items", True, f"Retrieved {wishlist_count} wishlist items", {"count": wishlist_count})
-                return True
-            else:
-                self.log_result("Get Wishlist Items", False, "Invalid wishlist response", response_data)
-                return False
-        else:
-            error_msg = response.json().get("error", "Unknown error") if response else "No response"
-            self.log_result("Get Wishlist Items", False, f"Failed to get wishlist: {error_msg}")
-            return False
-    
-    def test_orders_create(self):
-        """Test creating an order"""
-        print("\n=== Testing Create Order ===")
-        
-        if not self.user_token:
-            self.log_result("Create Order", False, "No user token available")
-            return False
-        
-        data = {
-            "items": [
-                {
-                    "productId": "test-product-id",
-                    "name": "Test Product",
-                    "price": 299.90,
-                    "quantity": 1,
-                    "size": "42",
-                    "color": "Preto"
-                }
-            ],
-            "shippingAddress": {
-                "street": "Rua Teste, 123",
-                "city": "São Paulo",
-                "state": "SP",
-                "zipCode": "01234-567"
-            },
-            "paymentMethod": "credit_card",
-            "total": 299.90
-        }
-        
-        response = self.make_request("POST", "orders", data, token=self.user_token)
-        
-        if response and response.status_code == 200:
-            response_data = response.json()
-            if "orderId" in response_data:
-                self.log_result("Create Order", True, "Order created successfully", response_data)
-                return True
-            else:
-                self.log_result("Create Order", False, "No order ID in response", response_data)
-                return False
-        else:
-            error_msg = response.json().get("error", "Unknown error") if response else "No response"
-            self.log_result("Create Order", False, f"Failed to create order: {error_msg}")
-            return False
-    
-    def test_orders_get_user_orders(self):
-        """Test getting user orders"""
-        print("\n=== Testing Get User Orders ===")
-        
-        if not self.user_token:
-            self.log_result("Get User Orders", False, "No user token available")
-            return False
-            
-        response = self.make_request("GET", "orders", token=self.user_token)
-        
-        if response and response.status_code == 200:
-            response_data = response.json()
-            if "orders" in response_data:
-                orders_count = len(response_data["orders"])
-                self.log_result("Get User Orders", True, f"Retrieved {orders_count} user orders", {"count": orders_count})
-                return True
-            else:
-                self.log_result("Get User Orders", False, "Invalid orders response", response_data)
-                return False
-        else:
-            error_msg = response.json().get("error", "Unknown error") if response else "No response"
-            self.log_result("Get User Orders", False, f"Failed to get orders: {error_msg}")
-            return False
-    
-    def test_admin_dashboard(self):
-        """Test admin dashboard"""
-        print("\n=== Testing Admin Dashboard ===")
+    def test_multiple_images_product(self):
+        """Test 3: Multiple Images in Products"""
+        print("\n=== Test 3: Multiple Images in Products ===")
         
         if not self.admin_token:
-            self.log_result("Admin Dashboard", False, "No admin token available")
+            self.log_result("Multiple Images Product", False, "No admin token available", "Admin authentication required")
             return False
             
-        response = self.make_request("GET", "admin/dashboard", token=self.admin_token)
-        
-        if response and response.status_code == 200:
-            response_data = response.json()
-            if "stats" in response_data:
-                self.log_result("Admin Dashboard", True, "Dashboard data retrieved", response_data)
-                return True
-            else:
-                self.log_result("Admin Dashboard", False, "Invalid dashboard response", response_data)
-                return False
-        else:
-            error_msg = response.json().get("error", "Unknown error") if response else "No response"
-            self.log_result("Admin Dashboard", False, f"Failed to get dashboard: {error_msg}")
-            return False
-    
-    def test_admin_create_product(self):
-        """Test admin creating a product"""
-        print("\n=== Testing Admin Create Product ===")
-        
-        if not self.admin_token:
-            self.log_result("Admin Create Product", False, "No admin token available")
-            return False
-        
-        data = {
-            "name": "Test Product API",
-            "description": "Product created via API test",
-            "price": 199.90,
-            "originalPrice": 249.90,
-            "category": "tenis-masculino",
-            "images": ["https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800"],
-            "sizes": ["40", "41", "42"],
-            "colors": ["Preto", "Branco"],
-            "stock": 25,
-            "featured": False
-        }
-        
-        response = self.make_request("POST", "admin/products", data, token=self.admin_token)
-        
-        if response and response.status_code == 200:
-            response_data = response.json()
-            if "productId" in response_data:
-                self.created_product_id = response_data["productId"]
-                self.log_result("Admin Create Product", True, "Product created successfully", response_data)
-                return True
-            else:
-                self.log_result("Admin Create Product", False, "No product ID in response", response_data)
-                return False
-        else:
-            error_msg = response.json().get("error", "Unknown error") if response else "No response"
-            self.log_result("Admin Create Product", False, f"Failed to create product: {error_msg}")
-            return False
-    
-    def test_admin_update_product(self):
-        """Test admin updating a product"""
-        print("\n=== Testing Admin Update Product ===")
-        
-        if not self.admin_token:
-            self.log_result("Admin Update Product", False, "No admin token available")
-            return False
+        try:
+            headers = {"Authorization": f"Bearer {self.admin_token}"}
             
-        if not self.created_product_id:
-            self.log_result("Admin Update Product", False, "No product ID to update")
-            return False
-        
-        data = {
-            "name": "Test Product API Updated",
-            "price": 179.90,
-            "stock": 30
-        }
-        
-        response = self.make_request("PUT", f"admin/products/{self.created_product_id}", data, token=self.admin_token)
-        
-        if response and response.status_code == 200:
-            response_data = response.json()
-            self.log_result("Admin Update Product", True, "Product updated successfully", response_data)
-            return True
-        else:
-            error_msg = response.json().get("error", "Unknown error") if response else "No response"
-            self.log_result("Admin Update Product", False, f"Failed to update product: {error_msg}")
-            return False
-    
-    def test_admin_get_all_orders(self):
-        """Test admin getting all orders"""
-        print("\n=== Testing Admin Get All Orders ===")
-        
-        if not self.admin_token:
-            self.log_result("Admin Get All Orders", False, "No admin token available")
-            return False
+            # Create product with multiple images
+            product_data = {
+                "name": "Produto Teste Multi Imagens",
+                "description": "Descrição teste com pelo menos 10 caracteres para validação",
+                "price": 100,
+                "originalPrice": 150,
+                "category": "tenis-masculino",
+                "images": [
+                    "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800",
+                    "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=800",
+                    "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?w=800"
+                ],
+                "sizes": ["P", "M", "G"],
+                "colors": ["Preto", "Branco"],
+                "stock": 10,
+                "rating": 4.5,
+                "reviews": 50,
+                "featured": False
+            }
             
-        response = self.make_request("GET", "admin/orders", token=self.admin_token)
-        
-        if response and response.status_code == 200:
-            response_data = response.json()
-            if "orders" in response_data:
-                orders_count = len(response_data["orders"])
-                self.log_result("Admin Get All Orders", True, f"Retrieved {orders_count} orders", {"count": orders_count})
-                return True
-            else:
-                self.log_result("Admin Get All Orders", False, "Invalid orders response", response_data)
-                return False
-        else:
-            error_msg = response.json().get("error", "Unknown error") if response else "No response"
-            self.log_result("Admin Get All Orders", False, f"Failed to get orders: {error_msg}")
-            return False
-    
-    def test_admin_get_all_users(self):
-        """Test admin getting all users"""
-        print("\n=== Testing Admin Get All Users ===")
-        
-        if not self.admin_token:
-            self.log_result("Admin Get All Users", False, "No admin token available")
-            return False
+            # Create product
+            create_response = requests.post(f"{API_BASE}/admin/products", json=product_data, headers=headers)
             
-        response = self.make_request("GET", "admin/users", token=self.admin_token)
-        
-        if response and response.status_code == 200:
-            response_data = response.json()
-            if "users" in response_data:
-                users_count = len(response_data["users"])
-                self.log_result("Admin Get All Users", True, f"Retrieved {users_count} users", {"count": users_count})
-                return True
+            if create_response.status_code == 200:
+                create_data = create_response.json()
+                product_id = create_data.get('productId')
+                
+                self.log_result(
+                    "Create Product with Multiple Images", 
+                    True, 
+                    "Product created successfully",
+                    f"Product ID: {product_id}"
+                )
+                
+                # Verify by fetching all products and checking our product
+                products_response = requests.get(f"{API_BASE}/products")
+                if products_response.status_code == 200:
+                    products = products_response.json().get('products', [])
+                    
+                    # Find our created product
+                    created_product = None
+                    for product in products:
+                        if str(product.get('_id')) == str(product_id):
+                            created_product = product
+                            break
+                    
+                    if created_product:
+                        images = created_product.get('images', [])
+                        if len(images) == 3:
+                            self.log_result(
+                                "Verify Multiple Images", 
+                                True, 
+                                f"Product has {len(images)} images as expected",
+                                f"Images: {images}"
+                            )
+                            return True
+                        else:
+                            self.log_result(
+                                "Verify Multiple Images", 
+                                False, 
+                                f"Expected 3 images, found {len(images)}",
+                                f"Images: {images}"
+                            )
+                    else:
+                        self.log_result("Verify Multiple Images", False, "Created product not found", f"Product ID: {product_id}")
+                else:
+                    self.log_result("Verify Multiple Images", False, "Failed to fetch products", products_response.text)
             else:
-                self.log_result("Admin Get All Users", False, "Invalid users response", response_data)
-                return False
-        else:
-            error_msg = response.json().get("error", "Unknown error") if response else "No response"
-            self.log_result("Admin Get All Users", False, f"Failed to get users: {error_msg}")
-            return False
-    
-    def test_admin_create_category(self):
-        """Test admin creating a category"""
-        print("\n=== Testing Admin Create Category ===")
-        
-        if not self.admin_token:
-            self.log_result("Admin Create Category", False, "No admin token available")
-            return False
-        
-        data = {
-            "name": "Test Category API",
-            "slug": "test-category-api"
-        }
-        
-        response = self.make_request("POST", "admin/categories", data, token=self.admin_token)
-        
-        if response and response.status_code == 200:
-            response_data = response.json()
-            if "categoryId" in response_data:
-                self.created_category_id = response_data["categoryId"]
-                self.log_result("Admin Create Category", True, "Category created successfully", response_data)
-                return True
-            else:
-                self.log_result("Admin Create Category", False, "No category ID in response", response_data)
-                return False
-        else:
-            error_msg = response.json().get("error", "Unknown error") if response else "No response"
-            self.log_result("Admin Create Category", False, f"Failed to create category: {error_msg}")
-            return False
-    
-    def test_admin_delete_product(self):
-        """Test admin deleting a product"""
-        print("\n=== Testing Admin Delete Product ===")
-        
-        if not self.admin_token:
-            self.log_result("Admin Delete Product", False, "No admin token available")
-            return False
+                self.log_result(
+                    "Create Product with Multiple Images", 
+                    False, 
+                    f"Failed to create product with status {create_response.status_code}",
+                    create_response.text
+                )
+                
+        except Exception as e:
+            self.log_result("Multiple Images Product", False, "Exception occurred", str(e))
             
-        if not self.created_product_id:
-            self.log_result("Admin Delete Product", False, "No product ID to delete")
-            return False
+        return False
+    
+    def test_wishlist_functionality(self):
+        """Test 4: Wishlist/Favorites Functionality"""
+        print("\n=== Test 4: Wishlist Functionality ===")
         
-        response = self.make_request("DELETE", f"admin/products/{self.created_product_id}", token=self.admin_token)
+        # First create a regular user for wishlist testing
+        try:
+            # Register a test user
+            user_data = {
+                "name": "Test User Wishlist",
+                "email": "testwishlist@example.com",
+                "password": "testpass123"
+            }
+            
+            register_response = requests.post(f"{API_BASE}/auth/register", json=user_data)
+            
+            if register_response.status_code == 200:
+                user_token = register_response.json().get('token')
+                self.log_result("User Registration", True, "Test user created for wishlist testing", None)
+            else:
+                # Try to login if user already exists
+                login_response = requests.post(f"{API_BASE}/auth/login", json={
+                    "email": "testwishlist@example.com",
+                    "password": "testpass123"
+                })
+                if login_response.status_code == 200:
+                    user_token = login_response.json().get('token')
+                    self.log_result("User Login", True, "Existing test user logged in", None)
+                else:
+                    self.log_result("User Authentication", False, "Failed to create or login test user", None)
+                    return False
+            
+            headers = {"Authorization": f"Bearer {user_token}"}
+            
+            # Get a product to add to wishlist
+            products_response = requests.get(f"{API_BASE}/products")
+            if products_response.status_code != 200:
+                self.log_result("Get Products", False, "Failed to fetch products", products_response.text)
+                return False
+                
+            products = products_response.json().get('products', [])
+            if not products:
+                self.log_result("Get Products", False, "No products available", "Cannot test wishlist")
+                return False
+                
+            test_product = products[0]
+            product_id = str(test_product.get('_id'))
+            product_name = test_product.get('name', 'Unknown')
+            
+            # Test 1: Add to wishlist
+            add_data = {"productId": product_id}
+            add_response = requests.post(f"{API_BASE}/wishlist", json=add_data, headers=headers)
+            
+            if add_response.status_code == 200:
+                self.log_result(
+                    "Add to Wishlist", 
+                    True, 
+                    f"Product '{product_name}' added to wishlist",
+                    f"Product ID: {product_id}"
+                )
+            else:
+                self.log_result(
+                    "Add to Wishlist", 
+                    False, 
+                    f"Failed to add to wishlist with status {add_response.status_code}",
+                    add_response.text
+                )
+                return False
+            
+            # Test 2: Get wishlist
+            get_response = requests.get(f"{API_BASE}/wishlist", headers=headers)
+            
+            if get_response.status_code == 200:
+                wishlist = get_response.json().get('wishlist', [])
+                if len(wishlist) > 0:
+                    wishlist_item = wishlist[0]
+                    wishlist_item_id = str(wishlist_item.get('_id'))
+                    
+                    self.log_result(
+                        "Get Wishlist", 
+                        True, 
+                        f"Wishlist retrieved with {len(wishlist)} items",
+                        f"First item ID: {wishlist_item_id}"
+                    )
+                    
+                    # Test 3: Remove from wishlist
+                    delete_response = requests.delete(f"{API_BASE}/wishlist/{wishlist_item_id}", headers=headers)
+                    
+                    if delete_response.status_code == 200:
+                        self.log_result(
+                            "Remove from Wishlist", 
+                            True, 
+                            "Item removed from wishlist successfully",
+                            f"Removed item ID: {wishlist_item_id}"
+                        )
+                        
+                        # Verify removal
+                        verify_response = requests.get(f"{API_BASE}/wishlist", headers=headers)
+                        if verify_response.status_code == 200:
+                            updated_wishlist = verify_response.json().get('wishlist', [])
+                            if len(updated_wishlist) == 0:
+                                self.log_result(
+                                    "Verify Wishlist Removal", 
+                                    True, 
+                                    "Wishlist is empty after removal",
+                                    "Removal verified successfully"
+                                )
+                                return True
+                            else:
+                                self.log_result(
+                                    "Verify Wishlist Removal", 
+                                    False, 
+                                    f"Wishlist still has {len(updated_wishlist)} items",
+                                    "Item may not have been removed"
+                                )
+                        else:
+                            self.log_result("Verify Wishlist Removal", False, "Failed to verify removal", verify_response.text)
+                    else:
+                        self.log_result(
+                            "Remove from Wishlist", 
+                            False, 
+                            f"Failed to remove from wishlist with status {delete_response.status_code}",
+                            delete_response.text
+                        )
+                else:
+                    self.log_result("Get Wishlist", False, "Wishlist is empty", "Item was not added")
+            else:
+                self.log_result(
+                    "Get Wishlist", 
+                    False, 
+                    f"Failed to get wishlist with status {get_response.status_code}",
+                    get_response.text
+                )
+                
+        except Exception as e:
+            self.log_result("Wishlist Functionality", False, "Exception occurred", str(e))
+            
+        return False
+    
+    def test_shipping_calculation(self):
+        """Test 5: Shipping Calculation"""
+        print("\n=== Test 5: Shipping Calculation ===")
         
-        if response and response.status_code == 200:
-            response_data = response.json()
-            self.log_result("Admin Delete Product", True, "Product deleted successfully", response_data)
-            return True
-        else:
-            error_msg = response.json().get("error", "Unknown error") if response else "No response"
-            self.log_result("Admin Delete Product", False, f"Failed to delete product: {error_msg}")
-            return False
+        try:
+            # Test shipping calculation for São Paulo
+            sp_data = {"cep": "01310100"}  # São Paulo CEP
+            sp_response = requests.post(f"{API_BASE}/shipping/calculate", json=sp_data)
+            
+            # Test shipping calculation for Salvador
+            salvador_data = {"cep": "40000100"}  # Salvador CEP
+            salvador_response = requests.post(f"{API_BASE}/shipping/calculate", json=salvador_data)
+            
+            if sp_response.status_code == 404 and salvador_response.status_code == 404:
+                self.log_result(
+                    "Shipping Calculation", 
+                    False, 
+                    "Shipping calculation endpoint not implemented",
+                    "Both requests returned 404 - endpoint does not exist"
+                )
+            elif sp_response.status_code == 200 and salvador_response.status_code == 200:
+                sp_data = sp_response.json()
+                salvador_data = salvador_response.json()
+                
+                # Check if shipping costs are different
+                sp_cost = sp_data.get('cost', 0)
+                salvador_cost = salvador_data.get('cost', 0)
+                
+                if sp_cost != salvador_cost:
+                    self.log_result(
+                        "Shipping Calculation", 
+                        True, 
+                        "Shipping calculation working with different costs",
+                        f"São Paulo: {sp_cost}, Salvador: {salvador_cost}"
+                    )
+                    return True
+                else:
+                    self.log_result(
+                        "Shipping Calculation", 
+                        False, 
+                        "Shipping costs are the same for different CEPs",
+                        f"Both locations: {sp_cost}"
+                    )
+            else:
+                self.log_result(
+                    "Shipping Calculation", 
+                    False, 
+                    "Shipping calculation partially working or has errors",
+                    f"SP Status: {sp_response.status_code}, Salvador Status: {salvador_response.status_code}"
+                )
+                
+        except Exception as e:
+            self.log_result("Shipping Calculation", False, "Exception occurred", str(e))
+            
+        return False
     
     def run_all_tests(self):
-        """Run all backend API tests"""
-        print(f"🚀 Starting E-commerce Backend API Tests")
-        print(f"Base URL: {self.base_url}")
+        """Run all tests"""
+        print("🚀 Starting K.J STORE Backend API Tests")
+        print(f"Base URL: {BASE_URL}")
         print("=" * 60)
         
-        # Authentication Tests
-        self.test_auth_register()
-        self.test_auth_login()
-        self.test_auth_me()
-        self.test_admin_login()
+        # Run tests in sequence
+        tests = [
+            self.test_admin_authentication,
+            self.test_category_deletion,
+            self.test_multiple_images_product,
+            self.test_wishlist_functionality,
+            self.test_shipping_calculation
+        ]
         
-        # Products Tests
-        self.test_products_list()
-        self.test_products_filter_category()
-        self.test_products_filter_featured()
-        self.test_products_filter_price()
-        self.test_products_search()
+        passed = 0
+        total = len(tests)
         
-        # Categories Tests
-        self.test_categories_list()
-        
-        # Cart Tests (requires authentication)
-        self.test_cart_add_item()
-        self.test_cart_get_items()
-        
-        # Wishlist Tests (requires authentication)
-        self.test_wishlist_add_item()
-        self.test_wishlist_get_items()
-        
-        # Orders Tests (requires authentication)
-        self.test_orders_create()
-        self.test_orders_get_user_orders()
-        
-        # Admin Tests (requires admin authentication)
-        self.test_admin_dashboard()
-        self.test_admin_create_product()
-        self.test_admin_update_product()
-        self.test_admin_get_all_orders()
-        self.test_admin_get_all_users()
-        self.test_admin_create_category()
-        self.test_admin_delete_product()
+        for test in tests:
+            try:
+                if test():
+                    passed += 1
+            except Exception as e:
+                print(f"❌ Test failed with exception: {e}")
         
         # Summary
-        self.print_summary()
-    
-    def print_summary(self):
-        """Print test summary"""
         print("\n" + "=" * 60)
-        print("🏁 TEST SUMMARY")
+        print("📊 TEST SUMMARY")
         print("=" * 60)
         
-        total_tests = len(self.test_results)
-        passed_tests = sum(1 for result in self.test_results if result["success"])
-        failed_tests = total_tests - passed_tests
+        for result in self.test_results:
+            status = "✅" if result['success'] else "❌"
+            print(f"{status} {result['test']}: {result['message']}")
         
-        print(f"Total Tests: {total_tests}")
-        print(f"✅ Passed: {passed_tests}")
-        print(f"❌ Failed: {failed_tests}")
-        print(f"Success Rate: {(passed_tests/total_tests)*100:.1f}%")
+        print(f"\n🎯 Overall Result: {passed}/{total} tests passed")
         
-        if failed_tests > 0:
-            print("\n🔍 FAILED TESTS:")
-            for result in self.test_results:
-                if not result["success"]:
-                    print(f"  ❌ {result['test']}: {result['message']}")
-        
-        print("\n" + "=" * 60)
-        
-        return passed_tests, failed_tests
+        if passed == total:
+            print("🎉 All tests passed!")
+            return True
+        else:
+            print(f"⚠️  {total - passed} tests failed")
+            return False
+
+def main():
+    """Main function"""
+    tester = KJStoreAPITester()
+    success = tester.run_all_tests()
+    
+    # Exit with appropriate code
+    sys.exit(0 if success else 1)
 
 if __name__ == "__main__":
-    tester = EcommerceAPITester()
-    tester.run_all_tests()
+    main()
