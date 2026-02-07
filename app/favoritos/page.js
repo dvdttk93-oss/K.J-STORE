@@ -77,6 +77,9 @@ export default function FavoritosPage() {
       if (response.ok) {
         alert('✓ Item removido dos favoritos!');
         loadWishlist(token);
+      } else {
+        const data = await response.json();
+        alert(data.error || 'Erro ao remover dos favoritos');
       }
     } catch (error) {
       console.error('Erro ao remover dos favoritos:', error);
