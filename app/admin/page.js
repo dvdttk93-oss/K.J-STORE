@@ -273,15 +273,15 @@ export default function AdminPage() {
       });
 
       if (response.ok) {
-        alert('Categoria criada com sucesso!');
+        toast.success('Categoria criada com sucesso!');
         setShowCategoryModal(false);
         loadData();
       } else {
-        alert('Erro ao criar categoria');
+        toast.error('Erro ao criar categoria');
       }
     } catch (error) {
       console.error('Erro ao criar categoria:', error);
-      alert('Erro ao processar solicitação');
+      toast.error('Erro ao processar solicitação');
     }
   };
 
