@@ -240,14 +240,14 @@ export default function AdminPage() {
       });
 
       if (response.ok) {
-        alert('Status atualizado!');
+        toast.success('Status atualizado!');
         loadData();
       } else {
-        alert('Erro ao atualizar status');
+        toast.error('Erro ao atualizar status');
       }
     } catch (error) {
       console.error('Erro ao atualizar status:', error);
-      alert('Erro ao processar solicitação');
+      toast.error('Erro ao processar solicitação');
     }
   };
 
