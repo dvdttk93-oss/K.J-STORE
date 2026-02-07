@@ -178,7 +178,7 @@ export default function CheckoutPage() {
       const data = await response.json();
       
       if (data.erro) {
-        alert('CEP não encontrado. Verifique o número digitado.');
+        toast.error('CEP não encontrado. Verifique o número digitado.');
         setSearchingCEP(false);
         return;
       }
