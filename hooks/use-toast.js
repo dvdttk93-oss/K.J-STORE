@@ -1,5 +1,5 @@
 "use client";
-// Custom toast hook for K.J STORE
+// Custom toast hook for K.J STORE - Mobile friendly
 import * as React from "react"
 
 const TOAST_LIMIT = 3
@@ -138,7 +138,7 @@ function toast({
 // Helper functions for different toast types
 toast.success = (message) => {
   return toast({
-    title: "✓ Sucesso",
+    title: "Sucesso!",
     description: message,
     variant: "success",
   })
@@ -146,7 +146,7 @@ toast.success = (message) => {
 
 toast.error = (message) => {
   return toast({
-    title: "✕ Erro",
+    title: "Erro!",
     description: message,
     variant: "destructive",
   })
@@ -154,7 +154,7 @@ toast.error = (message) => {
 
 toast.info = (message) => {
   return toast({
-    title: "ℹ Info",
+    title: "Info",
     description: message,
     variant: "default",
   })
@@ -162,17 +162,17 @@ toast.info = (message) => {
 
 toast.cart = (productName) => {
   return toast({
-    title: "🛒 Adicionado ao Carrinho",
+    title: "Adicionado ao Carrinho!",
     description: productName,
-    variant: "success",
+    variant: "cart",
   })
 }
 
 toast.wishlist = (productName) => {
   return toast({
-    title: "❤️ Adicionado aos Favoritos",
+    title: "Adicionado aos Favoritos!",
     description: productName,
-    variant: "success",
+    variant: "wishlist",
   })
 }
 
