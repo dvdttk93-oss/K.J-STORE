@@ -143,12 +143,12 @@ export default function AdminPage() {
     const reviews = parseInt(formData.get('reviews'));
     
     if (rating < 0 || rating > 5) {
-      alert('Avaliação deve estar entre 0 e 5 estrelas');
+      toast.error('Avaliação deve estar entre 0 e 5 estrelas');
       return;
     }
     
     if (reviews < 0) {
-      alert('Número de avaliações não pode ser negativo');
+      toast.error('Número de avaliações não pode ser negativo');
       return;
     }
     
