@@ -143,13 +143,13 @@ export default function Home() {
         setShowAuthModal(false);
         loadCartCount();
         loadWishlistCount();
-        alert(authMode === 'login' ? 'Login realizado com sucesso!' : 'Cadastro realizado com sucesso!');
+        toast.success(authMode === 'login' ? 'Login realizado com sucesso!' : 'Cadastro realizado com sucesso!');
       } else {
-        alert(result.error || 'Erro ao autenticar');
+        toast.error(result.error || 'Erro ao autenticar');
       }
     } catch (error) {
       console.error('Erro na autenticação:', error);
-      alert('Erro ao processar solicitação');
+      toast.error('Erro ao processar solicitação');
     }
   };
 
