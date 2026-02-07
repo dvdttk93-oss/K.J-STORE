@@ -6,6 +6,7 @@ import { ArrowLeft, Heart, Trash2, ShoppingCart, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { toast } from '@/hooks/use-toast';
 
 export default function FavoritosPage() {
   const router = useRouter();
