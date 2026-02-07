@@ -212,17 +212,17 @@ export default function AdminPage() {
       });
 
       if (response.ok) {
-        alert(editingProduct ? '✓ Produto atualizado com sucesso!' : '✓ Produto criado com sucesso!');
+        toast.success(editingProduct ? 'Produto atualizado com sucesso!' : 'Produto criado com sucesso!');
         setShowProductModal(false);
         setEditingProduct(null);
         loadData();
       } else {
         const error = await response.json();
-        alert('Erro ao salvar produto: ' + (error.error || 'Erro desconhecido'));
+        toast.error('Erro ao salvar produto: ' + (error.error || 'Erro desconhecido'));
       }
     } catch (error) {
       console.error('Erro ao salvar produto:', error);
-      alert('Erro ao processar solicitação. Verifique os dados e tente novamente.');
+      toast.error('Erro ao processar solicitação. Verifique os dados e tente novamente.');
     }
   };
 
