@@ -457,3 +457,5 @@ test_plan:
 agent_communication:
   - agent: "testing"
     message: "Completed comprehensive backend API testing. All 27 backend endpoints tested successfully with 100% success rate. All critical authentication, products, categories, cart, wishlist, orders, and admin functionality working correctly. No issues found. Backend is fully functional and ready for production use."
+  - agent: "testing"
+    message: "K.J STORE specific endpoint testing completed. Results: ✅ Admin authentication (admin@ecommerce.com/admin123) working. ✅ Category deletion working - successfully deleted and verified removal. ✅ Multiple images in products working - created product with 3 images successfully. ✅ Wishlist functionality working - add, get, remove all working correctly. ❌ Shipping calculation endpoint exists but returns same cost (0) for different CEPs - calculation logic needs improvement. Overall: 4/5 tests passed. Core functionality is solid."
