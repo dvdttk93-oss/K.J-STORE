@@ -65,8 +65,6 @@ export default function FavoritosPage() {
   };
 
   const removeFromWishlist = async (itemId) => {
-    if (!confirm('Deseja remover este item dos favoritos?')) return;
-
     const token = localStorage.getItem('token');
 
     try {
@@ -76,15 +74,15 @@ export default function FavoritosPage() {
       });
 
       if (response.ok) {
-        alert('✓ Item removido dos favoritos!');
+        toast.success('Item removido dos favoritos!');
         loadWishlist(token);
       } else {
         const data = await response.json();
-        alert(data.error || 'Erro ao remover dos favoritos');
+        toast.error(data.error || 'Erro ao remover dos favoritos');
       }
     } catch (error) {
       console.error('Erro ao remover dos favoritos:', error);
-      alert('Erro ao processar solicitação');
+      toast.error('Erro ao processar solicitação');
     }
   };
 
