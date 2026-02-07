@@ -88,12 +88,12 @@ export default function FavoritosPage() {
 
   const addToCart = async (product) => {
     if (!selectedSize) {
-      alert('Selecione um tamanho');
+      toast.error('Selecione um tamanho');
       return;
     }
 
     if (!selectedColor) {
-      alert('Selecione uma cor');
+      toast.error('Selecione uma cor');
       return;
     }
 
@@ -115,17 +115,17 @@ export default function FavoritosPage() {
       });
 
       if (response.ok) {
-        alert('✓ Produto adicionado ao carrinho!');
+        toast.cart(product.name);
         setSelectedProduct(null);
         setSelectedSize('');
         setSelectedColor('');
       } else {
         const data = await response.json();
-        alert(data.error || 'Erro ao adicionar ao carrinho');
+        toast.error(data.error || 'Erro ao adicionar ao carrinho');
       }
     } catch (error) {
       console.error('Erro ao adicionar ao carrinho:', error);
-      alert('Erro ao processar solicitação');
+      toast.error('Erro ao processar solicitação');
     }
   };
 
