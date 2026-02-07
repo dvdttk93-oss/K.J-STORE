@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { ShoppingCart, Heart, User, Search, Menu, X, Star, ChevronRight, Filter } from 'lucide-react';
+import { ShoppingCart, Heart, User, Search, Menu, X, Star, ChevronRight, ChevronLeft, Filter } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
