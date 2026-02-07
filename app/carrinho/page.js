@@ -99,11 +99,12 @@ export default function CarrinhoPage() {
       });
 
       if (response.ok) {
-        alert('Item removido do carrinho!');
+        toast.success('Item removido do carrinho!');
         loadCart();
       }
     } catch (error) {
       console.error('Erro ao remover item:', error);
+      toast.error('Erro ao remover item');
     }
   };
 
