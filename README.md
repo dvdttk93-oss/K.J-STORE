@@ -114,7 +114,6 @@ yarn dev
 
 6. **Acesse no navegador:**
 - **Site**: http://localhost:3000
-- **Painel Admin**: http://localhost:3000/admin
 
 
 ### Criar Novo Cliente
