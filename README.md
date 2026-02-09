@@ -116,12 +116,6 @@ yarn dev
 - **Site**: http://localhost:3000
 - **Painel Admin**: http://localhost:3000/admin
 
-## 👤 Credenciais de Acesso
-
-### Administrador Padrão (K.J STORE Admin)
-- **Email**: admin@ecommerce.com
-- **Senha**: admin123
-- **Acesso**: http://localhost:3000/admin
 
 ### Criar Novo Cliente
 Faça o registro direto no site através do botão "Entrar" → "Cadastrar"
@@ -309,6 +303,4 @@ Contribuições são bem-vindas! Sinta-se à vontade para:
 - Sugerir novas funcionalidades
 - Enviar pull requests
 
----
-
-**Feito com ❤️ e Next.js**
+dev - deivid lucas, contato: 77998309542
